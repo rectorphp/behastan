@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace Rector\Behastan\Reporting;
 
+use Entropy\Console\Output\OutputPrinter;
 use Rector\Behastan\ValueObject\Mask\ExactMask;
 use Rector\Behastan\ValueObject\Mask\NamedMask;
 use Rector\Behastan\ValueObject\Mask\RegexMask;
 use Rector\Behastan\ValueObject\Mask\SkippedMask;
 use Rector\Behastan\ValueObject\MaskCollection;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 final readonly class MaskCollectionStatsPrinter
 {
     public function __construct(
-        private SymfonyStyle $symfonyStyle
+        private OutputPrinter $outputPrinter
     ) {
     }
 
     public function print(MaskCollection $maskCollection): void
     {
-        $this->symfonyStyle->writeln(sprintf('Found %d masks:', $maskCollection->count()));
-        $this->symfonyStyle->writeln(sprintf(' * %d exact', $maskCollection->countByType(ExactMask::class)));
-        $this->symfonyStyle->writeln(sprintf(' * %d /regex/', $maskCollection->countByType(RegexMask::class)));
-        $this->symfonyStyle->writeln(sprintf(' * %d :named', $maskCollection->countByType(NamedMask::class)));
+        $this->outputPrinter->writeln(sprintf('Found %d masks:', $maskCollection->count()));
+        $this->outputPrinter->writeln(sprintf(' * %d exact', $maskCollection->countByType(ExactMask::class)));
+        $this->outputPrinter->writeln(sprintf(' * %d /regex/', $maskCollection->countByType(RegexMask::class)));
+        $this->outputPrinter->writeln(sprintf(' * %d :named', $maskCollection->countByType(NamedMask::class)));
 
         $this->printSkippedMasks($maskCollection);
     }
@@ -42,7 +42,7 @@ final readonly class MaskCollectionStatsPrinter
 
         $skippedMasksString = implode('", "', $skippedMasksValues);
 
-        $this->symfonyStyle->writeln(sprintf(
+        $this->outputPrinter->writeln(sprintf(
             ' * %d skipped ("%s")',
             $maskCollection->countByType(SkippedMask::class),
             $skippedMasksString

@@ -19,5 +19,11 @@ return RectorConfig::configure()
         naming: true,
         rectorPreset: true,
     )
+    ->withSkip([
+        \Rector\Php55\Rector\String_\StringClassNameToClassConstantRector::class => [
+            // keep string class names
+            __DIR__ . '/src/Resolver/ClassMethodMasksResolver.php',
+        ],
+    ])
     ->withImportNames()
     ->withSkip(['*/scoper.php', '*/Source/*', '*/Fixture/*']);

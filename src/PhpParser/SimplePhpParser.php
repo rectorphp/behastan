@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rector\Behastan\PhpParser;
 
+use Entropy\Utils\FileSystem;
 use PhpParser\Node\Stmt;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
@@ -25,10 +26,7 @@ final readonly class SimplePhpParser
      */
     public function parseFilePath(string $filePath): array
     {
-        Assert::fileExists($filePath);
-
-        $fileContents = file_get_contents($filePath);
-        Assert::string($fileContents);
+        $fileContents = FileSystem::read($filePath);
 
         $stmts = $this->phpParser->parse($fileContents);
         Assert::isArray($stmts);
