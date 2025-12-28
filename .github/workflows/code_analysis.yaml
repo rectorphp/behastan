@@ -28,8 +28,12 @@ jobs:
                         run: vendor/bin/phpunit
 
                     -
+                        name: 'Main run'
+                        run: php bin/behastan
+
+                    -
                         name: 'Check Active Classes'
-                        run: vendor/bin/class-leak check bin src --ansi
+                        run: vendor/bin/class-leak check bin src --skip-type="Entropy\Console\Contract\CommandInterface" --skip-type="Rector\Behastan\Contract\RuleInterface"
 
         name: ${{ matrix.actions.name }}
         runs-on: ubuntu-latest
@@ -39,7 +43,7 @@ jobs:
             # see https://github.com/shivammathur/setup-php
             -   uses: shivammathur/setup-php@v2
                 with:
-                    php-version: 8.2
+                    php-version: 8.3
                     coverage: none
 
             # composer install cache - https://github.com/ramsey/composer-install

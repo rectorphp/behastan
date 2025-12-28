@@ -4,144 +4,131 @@ declare(strict_types=1);
 
 namespace Rector\Behastan\Command;
 
-use Rector\Behastan\Contract\RuleInterface;
+use Entropy\Console\Contract\CommandInterface;
+use Entropy\Console\Output\OutputPrinter;
 use Rector\Behastan\DefinitionMasksExtractor;
-use Rector\Behastan\Enum\Option;
 use Rector\Behastan\Finder\BehatMetafilesFinder;
 use Rector\Behastan\Reporting\MaskCollectionStatsPrinter;
+use Rector\Behastan\RulesRegistry;
 use Rector\Behastan\ValueObject\RuleError;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Rector\Console\ExitCode;
 use Webmozart\Assert\Assert;
 
-final class AnalyzeCommand extends Command
+final readonly class AnalyzeCommand implements CommandInterface
 {
-    /**
-     * @param RuleInterface[] $rules
-     */
     public function __construct(
-        private readonly SymfonyStyle $symfonyStyle,
-        private readonly DefinitionMasksExtractor $definitionMasksExtractor,
-        private readonly MaskCollectionStatsPrinter $maskCollectionStatsPrinter,
-        private readonly array $rules
+        private DefinitionMasksExtractor $definitionMasksExtractor,
+        private MaskCollectionStatsPrinter $maskCollectionStatsPrinter,
+        private OutputPrinter $outputPrinter,
+        private RulesRegistry $rulesRegistry,
     ) {
-        parent::__construct();
-
-        Assert::allObject($rules);
-        Assert::allIsInstanceOf($rules, RuleInterface::class);
-        Assert::notEmpty($rules);
-        Assert::greaterThan(count($rules), 2);
     }
 
-    protected function configure(): void
+    /**
+     * @param string $projectDirectory Project directory (we find *.Context.php definition files and *.feature script files there)
+     * @param string[] $skip Skip a rule by identifier
+     *
+     * @return ExitCode::*
+     */
+    public function run(?string $projectDirectory = null, array $skip = []): int
     {
-        $this->setName('analyze');
-        $this->setAliases(['analyse']);
+        // fallback to current directory
+        if ($projectDirectory === null) {
+            $projectDirectory = getcwd();
+            Assert::string($projectDirectory);
+        }
 
-        $this->setDescription('Run complete static analysis on Behat definitions and features');
+        Assert::directory($projectDirectory);
 
-        $this->addArgument(
-            Option::PROJECT_DIRECTORY,
-            InputArgument::OPTIONAL,
-            'Project directory (we find *.Context.php definition files and *.feature script files there)',
-            getcwd()
-        );
-
-        $this->addOption(
-            'skip',
-            null,
-            InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
-            'Skip a rule by identifier'
-        );
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $testDirectory = $input->getArgument(Option::PROJECT_DIRECTORY);
-        Assert::directory($testDirectory);
-
-        $contextFileInfos = BehatMetafilesFinder::findContextFiles([$testDirectory]);
+        $contextFileInfos = BehatMetafilesFinder::findContextFiles([$projectDirectory]);
         if ($contextFileInfos === []) {
-            $this->symfonyStyle->error(sprintf(
+            $this->outputPrinter->redBackground(sprintf(
                 'No *.Context files found in "%s". Please provide correct directory',
-                $testDirectory
+                $projectDirectory
             ));
-            return self::FAILURE;
+
+            return ExitCode::FAILURE;
         }
 
-        $featureFileInfos = BehatMetafilesFinder::findFeatureFiles([$testDirectory]);
+        $featureFileInfos = BehatMetafilesFinder::findFeatureFiles([$projectDirectory]);
         if ($featureFileInfos === []) {
-            $this->symfonyStyle->error(sprintf(
+            $this->outputPrinter->redBackground(sprintf(
                 'No *.feature files found in "%s". Please provide correct directory',
-                $testDirectory
+                $projectDirectory
             ));
-            return self::FAILURE;
+
+            return ExitCode::FAILURE;
         }
 
-        $skips = $input->getOption('skip');
-
-        $this->symfonyStyle->writeln(sprintf(
+        $this->outputPrinter->writeln(sprintf(
             '<fg=green>Found %d Context and %d feature files</>',
             count($contextFileInfos),
             count($featureFileInfos)
         ));
-        $this->symfonyStyle->writeln('<fg=yellow>Extracting definitions masks...</>');
+        $this->outputPrinter->writeln('<fg=yellow>Extracting definitions masks...</>');
 
         $maskCollection = $this->definitionMasksExtractor->extract($contextFileInfos);
-        $this->symfonyStyle->newLine();
+        $this->outputPrinter->newLine();
 
         $this->maskCollectionStatsPrinter->print($maskCollection);
-        $this->symfonyStyle->newLine();
+        $this->outputPrinter->newLine();
 
-        $this->symfonyStyle->writeln('<fg=yellow>Running analysis...</>');
-        $this->symfonyStyle->newLine();
+        $this->outputPrinter->writeln('<fg=yellow>Running analysis...</>');
+        $this->outputPrinter->newLine();
 
         /** @var RuleError[] $allRuleErrors */
         $allRuleErrors = [];
-        foreach ($this->rules as $rule) {
-            if ($skips !== [] && in_array($rule->getIdentifier(), $skips, true)) {
-                $this->symfonyStyle->writeln(sprintf('<fg=cyan>Skipping "%s" rule</>', $rule->getIdentifier()));
-                $this->symfonyStyle->newLine();
+        foreach ($this->rulesRegistry->all() as $rule) {
+            if ($skip !== [] && in_array($rule->getIdentifier(), $skip, true)) {
+                $this->outputPrinter->writeln(sprintf('<fg=cyan>Skipping "%s" rule</>', $rule->getIdentifier()));
+                $this->outputPrinter->newLine();
                 continue;
             }
 
-            $ruleErrors = $rule->process($contextFileInfos, $featureFileInfos, $maskCollection, $testDirectory);
+            $ruleErrors = $rule->process($contextFileInfos, $featureFileInfos, $maskCollection, $projectDirectory);
             $allRuleErrors = array_merge($allRuleErrors, $ruleErrors);
         }
 
         if ($allRuleErrors === []) {
-            $this->symfonyStyle->newLine(2);
-            $this->symfonyStyle->success('No errors found. Good job!');
+            $this->outputPrinter->newLine(2);
+            $this->outputPrinter->greenBackground('No errors found. Good job!');
 
-            return self::SUCCESS;
+            return ExitCode::SUCCESS;
         }
 
-        $this->symfonyStyle->newLine(2);
+        $this->outputPrinter->newLine(2);
 
         $i = 1;
         foreach ($allRuleErrors as $allRuleError) {
-            $this->symfonyStyle->writeln(sprintf('<fg=yellow>%d) %s</>', $i, $allRuleError->getMessage()));
+            $this->outputPrinter->writeln(sprintf('<fg=yellow>%d) %s</>', $i, $allRuleError->getMessage()));
             foreach ($allRuleError->getLineFilePaths() as $lineFilePath) {
                 // compared to listing() this allow to make paths clickable in IDE
-                $this->symfonyStyle->writeln($lineFilePath);
+                $this->outputPrinter->writeln($lineFilePath);
             }
 
-            $this->symfonyStyle->newLine(2);
+            $this->outputPrinter->newLine(2);
 
             ++$i;
         }
 
-        $this->symfonyStyle->newLine();
-        $this->symfonyStyle->error(sprintf(
+        $this->outputPrinter->newLine();
+
+        $this->outputPrinter->redBackground(sprintf(
             'Found %d error%s',
             count($allRuleErrors),
             count($allRuleErrors) > 1 ? 's' : ''
         ));
 
-        return self::FAILURE;
+        return ExitCode::FAILURE;
+    }
+
+    public function getName(): string
+    {
+        return 'analyze';
+    }
+
+    public function getDescription(): string
+    {
+        return 'Run complete static analysis on Behat definitions and features';
     }
 }

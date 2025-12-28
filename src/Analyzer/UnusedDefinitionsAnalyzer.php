@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rector\Behastan\Analyzer;
 
+use Entropy\Console\Output\OutputPrinter;
 use Nette\Utils\Strings;
 use Rector\Behastan\DefinitionMasksExtractor;
 use Rector\Behastan\UsedInstructionResolver;
@@ -13,7 +14,6 @@ use Rector\Behastan\ValueObject\Mask\NamedMask;
 use Rector\Behastan\ValueObject\Mask\RegexMask;
 use Rector\Behastan\ValueObject\Mask\SkippedMask;
 use Rector\Behastan\ValueObject\MaskCollection;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\SplFileInfo;
 use Webmozart\Assert\Assert;
 
@@ -28,7 +28,6 @@ final readonly class UnusedDefinitionsAnalyzer
     private const MASK_VALUE_REGEX = '#(\:[\W\w]+)#';
 
     public function __construct(
-        private SymfonyStyle $symfonyStyle,
         private UsedInstructionResolver $usedInstructionResolver,
         private DefinitionMasksExtractor $definitionMasksExtractor,
     ) {
@@ -55,11 +54,11 @@ final readonly class UnusedDefinitionsAnalyzer
         $maskCollection = $this->definitionMasksExtractor->extract($contextFiles);
 
         $featureInstructions = $this->usedInstructionResolver->resolveInstructionsFromFeatureFiles($featureFiles);
-        $maskProgressBar = $this->symfonyStyle->createProgressBar($maskCollection->count());
+        //$maskProgressBar = $this->outputPrinter->createProgressBar($maskCollection->count());
 
         $unusedMasks = [];
         foreach ($maskCollection->all() as $mask) {
-            $maskProgressBar->advance();
+            //            $maskProgressBar->advance();
 
             if ($this->isMaskUsed($mask, $featureInstructions)) {
                 continue;
@@ -68,7 +67,7 @@ final readonly class UnusedDefinitionsAnalyzer
             $unusedMasks[] = $mask;
         }
 
-        $maskProgressBar->finish();
+        //        $maskProgressBar->finish();
 
         return $unusedMasks;
     }

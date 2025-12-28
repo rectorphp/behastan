@@ -3,9 +3,6 @@
 declare(strict_types=1);
 
 use Rector\Behastan\DependencyInjection\ContainerFactory;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 $possibleAutoloadPaths = [
     // dependency
@@ -28,10 +25,8 @@ if (file_exists($scoperAutoloadFilepath)) {
     require_once $scoperAutoloadFilepath;
 }
 
-$containerFactory = new ContainerFactory();
-$container = $containerFactory->create();
+$container = ContainerFactory::create();
+$consoleApplication = $container->make(\Entropy\Console\ConsoleApplication::class);
 
-$application = $container->make(Application::class);
-
-$exitCode = $application->run(new ArgvInput(), new ConsoleOutput());
+$exitCode = $consoleApplication->run($argv);
 exit($exitCode);
