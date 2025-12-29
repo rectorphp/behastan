@@ -1,21 +1,23 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Rector\Behastan\ValueObject;
 
 use Rector\Behastan\ValueObject\Mask\AbstractMask;
-
-final readonly class MaskCollection
+final class MaskCollection
 {
+    /**
+     * @var AbstractMask[]
+     * @readonly
+     */
+    private $masks;
     /**
      * @param AbstractMask[] $masks
      */
-    public function __construct(
-        private array $masks
-    ) {
+    public function __construct(array $masks)
+    {
+        $this->masks = $masks;
     }
-
     /**
      * @param class-string<AbstractMask> $type
      */
@@ -24,12 +26,10 @@ final readonly class MaskCollection
         $masksByType = $this->byType($type);
         return count($masksByType);
     }
-
     public function count(): int
     {
         return count($this->masks);
     }
-
     /**
      * @return AbstractMask[]
      */
@@ -37,7 +37,6 @@ final readonly class MaskCollection
     {
         return $this->masks;
     }
-
     /**
      * @template TMask as AbstractMask
      *
@@ -46,6 +45,8 @@ final readonly class MaskCollection
      */
     public function byType(string $type): array
     {
-        return array_filter($this->masks, fn (AbstractMask $mask): bool => $mask instanceof $type);
+        return array_filter($this->masks, function (AbstractMask $mask) use ($type): bool {
+            return $mask instanceof $type;
+        });
     }
 }
