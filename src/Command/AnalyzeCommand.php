@@ -107,8 +107,8 @@ final readonly class AnalyzeCommand implements CommandInterface
             }
 
             // identifier
-            $this->outputPrinter->writeln(sprintf('* id:  <fg=cyan>[%s]</>', $allRuleError->getIdentifier()));
-            $this->outputPrinter->newLine(2);
+            $this->outputPrinter->newLine(1);
+            $this->outputPrinter->writeln(sprintf('* identifier: <fg=cyan>[%s]</>', $allRuleError->getIdentifier()));
 
             $this->outputPrinter->newLine(2);
 
