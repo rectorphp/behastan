@@ -34,12 +34,18 @@ final readonly class UnusedContextDefinitionsRule implements RuleInterface
         $ruleErrors = [];
 
         foreach ($unusedMasks as $unusedMask) {
-            $ruleErrors[] = new RuleError(sprintf(
+            $errorMessage = sprintf(
                 'The mask "%s" and its definition %s::%s() is never used',
                 $unusedMask->mask,
                 $unusedMask->className,
                 $unusedMask->methodName
-            ), [$unusedMask->filePath . ':' . $unusedMask->line]);
+            );
+
+            $ruleErrors[] = new RuleError(
+                $errorMessage,
+                [$unusedMask->filePath . ':' . $unusedMask->line],
+                $this->getIdentifier()
+            );
         }
 
         return $ruleErrors;

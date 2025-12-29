@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Rector\Behastan\ValueObject;
 
+use Rector\Behastan\Enum\RuleIdentifier;
+
 final readonly class RuleError
 {
     /**
      * @param string[] $lineFilePaths
+     * @param RuleIdentifier::* $identifier
      */
     public function __construct(
         private string $message,
-        private array $lineFilePaths
+        private array $lineFilePaths,
+        private string $identifier,
     ) {
     }
 
@@ -26,5 +30,10 @@ final readonly class RuleError
     public function getLineFilePaths(): array
     {
         return $this->lineFilePaths;
+    }
+
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
     }
 }

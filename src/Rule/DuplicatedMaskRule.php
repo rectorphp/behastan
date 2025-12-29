@@ -55,7 +55,10 @@ final readonly class DuplicatedMaskRule implements RuleInterface
                 $lineFilePaths[] = $relativeFilePath . ':' . $sameMakClassMethodContextDefinition->getMethodLine();
             }
 
-            $ruleErrors[] = new RuleError(sprintf('Duplicated mask "%s"', $mask), $lineFilePaths);
+            $ruleErrors[] = new RuleError(sprintf(
+                'Duplicated mask "%s"',
+                $mask
+            ), $lineFilePaths, $this->getIdentifier());
         }
 
         return $ruleErrors;

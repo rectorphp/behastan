@@ -54,7 +54,7 @@ final readonly class DuplicatedContextDefinitionContentsRule implements RuleInte
                 $maskStrings
             );
 
-            $ruleErrors[] = new RuleError($errorMessage, $lineFilePaths);
+            $ruleErrors[] = new RuleError($errorMessage, $lineFilePaths, $this->getIdentifier());
         }
 
         return $ruleErrors;
