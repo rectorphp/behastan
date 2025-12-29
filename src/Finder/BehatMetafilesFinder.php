@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Rector\Behastan\Finder;
 
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
+use Behastan202512\Symfony\Component\Finder\Finder;
+use Behastan202512\Symfony\Component\Finder\SplFileInfo;
 use Webmozart\Assert\Assert;
-
 final class BehatMetafilesFinder
 {
     /**
@@ -16,24 +14,18 @@ final class BehatMetafilesFinder
      */
     public static function findContextFiles(array $directories): array
     {
-        $filesFinder = self::createFinder($directories)
-            ->name('*Context.php');
-
+        $filesFinder = self::createFinder($directories)->name('*Context.php');
         return iterator_to_array($filesFinder->getIterator());
     }
-
     /**
      * @param string[] $directories
      * @return SplFileInfo[]
      */
     public static function findFeatureFiles(array $directories): array
     {
-        $filesFinder = self::createFinder($directories)
-            ->name('*.feature');
-
+        $filesFinder = self::createFinder($directories)->name('*.feature');
         return iterator_to_array($filesFinder->getIterator());
     }
-
     /**
      * @param string[] $directories
      */
@@ -41,13 +33,6 @@ final class BehatMetafilesFinder
     {
         Assert::allString($directories);
         Assert::allDirectory($directories);
-
-        return Finder::create()
-            ->files()
-            ->notPath('vendor')
-            ->notPath('node_modules')
-            // test data
-            ->notPath('Fixture')
-            ->in($directories);
+        return Finder::create()->files()->notPath('vendor')->notPath('node_modules')->notPath('Fixture')->in($directories);
     }
 }
