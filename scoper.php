@@ -12,7 +12,5 @@ $timestamp = $nowDateTime->format('Ym');
 // see https://github.com/humbug/php-scoper
 return [
     'prefix' => 'Jack' . $timestamp,
-    'exclude-namespaces' => [
-        '#^Rector\\\\Behastan#', '#^Webmozart\\\\#'
-    ],
+    'exclude-namespaces' => ['#^Rector\\\\Behastan#', '#^Webmozart\\\\#'],
 ];
