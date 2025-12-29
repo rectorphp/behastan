@@ -2,50 +2,15 @@
     "name": "rector/behastan",
     "description": "Static analysis for Behat definitions and context files",
     "license": "MIT",
+    "require": {
+        "php": ">=7.2"
+    },
     "bin": [
         "bin/behastan"
     ],
-    "require": {
-        "php": "^8.2",
-        "nette/utils": "^4.0",
-        "entropy/entropy": "dev-main",
-        "nikic/php-parser": "^5.6",
-        "symfony/finder": "^7.0",
-        "webmozart/assert": "^1.12"
-    },
-    "require-dev": {
-        "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^11.5",
-        "rector/rector": "^2.2",
-        "phpecs/phpecs": "^2.2",
-        "tomasvotruba/class-leak": "^2.0",
-        "tracy/tracy": "^2.10"
-    },
     "autoload": {
         "psr-4": {
             "Rector\\Behastan\\": "src"
         }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Rector\\Behastan\\Tests\\": "tests"
-        },
-        "classmap": [
-            "stubs"
-        ]
-    },
-    "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "phpstan/extension-installer": true
-        },
-        "platform-check": false
-    },
-    "scripts": {
-        "check-cs": "vendor/bin/ecs check --ansi",
-        "fix-cs": "vendor/bin/ecs check --fix --ansi",
-        "phpstan": "vendor/bin/phpstan analyse --ansi",
-        "rector": "vendor/bin/rector process --ansi"
     }
 }
