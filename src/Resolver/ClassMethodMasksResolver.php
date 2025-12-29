@@ -16,11 +16,6 @@ final class ClassMethodMasksResolver
     private const INSTRUCTION_DOCBLOCK_REGEX = '#\@(Given|Then|When)\s+(?<instruction>.*?)\n#m';
 
     /**
-     * @var string[]
-     */
-    private const ATTRIBUTE_NAMES = ['Behat\Step\When', 'Behat\Step\Then', 'Behat\Step\Given', 'Behat\Step\And'];
-
-    /**
      * @return string[]
      */
     public function resolve(ClassMethod $classMethod): array
@@ -40,7 +35,9 @@ final class ClassMethodMasksResolver
         foreach ($classMethod->attrGroups as $attrGroup) {
             foreach ($attrGroup->attrs as $attr) {
                 $attributeName = $attr->name->toString();
-                if (! in_array($attributeName, self::ATTRIBUTE_NAMES)) {
+
+                /** @see https://github.com/Behat/Behat/tree/3.x/src/Behat/Step */
+                if (! str_starts_with($attributeName, 'Behat\Step')) {
                     continue;
                 }
 
