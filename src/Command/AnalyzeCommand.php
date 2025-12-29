@@ -47,7 +47,7 @@ final readonly class AnalyzeCommand implements CommandInterface
                 $projectDirectory
             ));
 
-            return ExitCode::FAILURE;
+            return ExitCode::ERROR;
         }
 
         $featureFileInfos = BehatMetafilesFinder::findFeatureFiles([$projectDirectory]);
@@ -57,7 +57,7 @@ final readonly class AnalyzeCommand implements CommandInterface
                 $projectDirectory
             ));
 
-            return ExitCode::FAILURE;
+            return ExitCode::ERROR;
         }
 
         $this->outputPrinter->writeln(sprintf(
@@ -119,7 +119,7 @@ final readonly class AnalyzeCommand implements CommandInterface
             count($allRuleErrors) > 1 ? 's' : ''
         ));
 
-        return ExitCode::FAILURE;
+        return ExitCode::ERROR;
     }
 
     public function getName(): string
