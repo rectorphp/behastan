@@ -1,25 +1,32 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Rector\Behastan\ValueObject;
 
-final readonly class RuleError
+final class RuleError
 {
+    /**
+     * @readonly
+     * @var string
+     */
+    private $message;
+    /**
+     * @var string[]
+     * @readonly
+     */
+    private $lineFilePaths;
     /**
      * @param string[] $lineFilePaths
      */
-    public function __construct(
-        private string $message,
-        private array $lineFilePaths
-    ) {
+    public function __construct(string $message, array $lineFilePaths)
+    {
+        $this->message = $message;
+        $this->lineFilePaths = $lineFilePaths;
     }
-
     public function getMessage(): string
     {
         return $this->message;
     }
-
     /**
      * @return string[]
      */

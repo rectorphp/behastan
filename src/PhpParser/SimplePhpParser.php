@@ -1,40 +1,37 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Rector\Behastan\PhpParser;
 
-use Entropy\Utils\FileSystem;
-use PhpParser\Node\Stmt;
-use PhpParser\NodeTraverser;
-use PhpParser\NodeVisitor\NameResolver;
-use PhpParser\Parser;
-use PhpParser\ParserFactory;
+use Jack202512\Entropy\Utils\FileSystem;
+use Jack202512\PhpParser\Node\Stmt;
+use Jack202512\PhpParser\NodeTraverser;
+use Jack202512\PhpParser\NodeVisitor\NameResolver;
+use Jack202512\PhpParser\Parser;
+use Jack202512\PhpParser\ParserFactory;
 use Webmozart\Assert\Assert;
-
-final readonly class SimplePhpParser
+final class SimplePhpParser
 {
-    private Parser $phpParser;
-
+    /**
+     * @readonly
+     * @var \PhpParser\Parser
+     */
+    private $phpParser;
     public function __construct()
     {
         $this->phpParser = (new ParserFactory())->createForHostVersion();
     }
-
     /**
      * @return Stmt[]
      */
     public function parseFilePath(string $filePath): array
     {
         $fileContents = FileSystem::read($filePath);
-
         $stmts = $this->phpParser->parse($fileContents);
         Assert::isArray($stmts);
-
         $nameNodeTraverser = new NodeTraverser();
         $nameNodeTraverser->addVisitor(new NameResolver());
         $nameNodeTraverser->traverse($stmts);
-
         return $stmts;
     }
 }
