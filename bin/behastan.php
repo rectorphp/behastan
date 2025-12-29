@@ -1,9 +1,9 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Behastan202512;
 
 use Rector\Behastan\DependencyInjection\ContainerFactory;
-
 $possibleAutoloadPaths = [
     // dependency
     __DIR__ . '/../../../autoload.php',
@@ -12,21 +12,17 @@ $possibleAutoloadPaths = [
     // monorepo
     __DIR__ . '/../../../vendor/autoload.php',
 ];
-
 foreach ($possibleAutoloadPaths as $possibleAutoloadPath) {
-    if (file_exists($possibleAutoloadPath)) {
+    if (\file_exists($possibleAutoloadPath)) {
         require_once $possibleAutoloadPath;
         break;
     }
 }
-
 $scoperAutoloadFilepath = __DIR__ . '/../vendor/scoper-autoload.php';
-if (file_exists($scoperAutoloadFilepath)) {
+if (\file_exists($scoperAutoloadFilepath)) {
     require_once $scoperAutoloadFilepath;
 }
-
 $container = ContainerFactory::create();
-$consoleApplication = $container->make(\Entropy\Console\ConsoleApplication::class);
-
+$consoleApplication = $container->make(\Behastan202512\Entropy\Console\ConsoleApplication::class);
 $exitCode = $consoleApplication->run($argv);
 exit($exitCode);
