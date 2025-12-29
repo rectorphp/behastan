@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Rector\Behastan\Command;
 
 use Entropy\Console\Contract\CommandInterface;
+use Entropy\Console\Enum\ExitCode;
 use Entropy\Console\Output\OutputPrinter;
 use Rector\Behastan\DefinitionMasksExtractor;
 use Rector\Behastan\Finder\BehatMetafilesFinder;
 use Rector\Behastan\Reporting\MaskCollectionStatsPrinter;
 use Rector\Behastan\RulesRegistry;
 use Rector\Behastan\ValueObject\RuleError;
-use Rector\Console\ExitCode;
 use Webmozart\Assert\Assert;
 
 final readonly class AnalyzeCommand implements CommandInterface
