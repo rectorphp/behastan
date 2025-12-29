@@ -12,6 +12,15 @@ $timestamp = $nowDateTime->format('Ym');
 // see https://github.com/humbug/php-scoper
 return [
     'prefix' => 'Behastan' . $timestamp,
-    // unprefix "Behat\Step" namespace
-    'exclude-namespaces' => ['#^Rector\\\\Behastan#', '#^Webmozart\\\\#', '#^Behat\\\\Step#'],
+    'exclude-namespaces' => ['#^Rector\\\\Behastan#', '#^Webmozart\\\\#'],
+    'patches' => [
+        // unprefix "Behat\Step" string names
+        function (string $filePath, string $prefix, string $contents): string {
+            return str_replace(
+                $prefix . '\\Behat\\Step',
+                'Behat\\Step',
+                $contents
+            );
+        },
+    ],
 ];
