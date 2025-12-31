@@ -9,7 +9,7 @@ Find unused and duplicated definitions easily &ndash; without running Behat test
 ## Install
 
 ```bash
-composer require behastan/behastan --dev
+composer require rector/behastan --dev
 ```
 
 ## Usage
