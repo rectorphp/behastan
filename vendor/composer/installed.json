@@ -1,0 +1,345 @@
+{
+    "packages": [
+        {
+            "name": "entropy\/entropy",
+            "version": "dev-main",
+            "version_normalized": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https:\/\/github.com\/TomasVotruba\/entropy.git",
+                "reference": "4dc7c3a2832a4ca5dd09b4f82e763a894deafe6d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https:\/\/api.github.com\/repos\/TomasVotruba\/entropy\/zipball\/4dc7c3a2832a4ca5dd09b4f82e763a894deafe6d",
+                "reference": "4dc7c3a2832a4ca5dd09b4f82e763a894deafe6d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-tokenizer": "*",
+                "php": "^8.3",
+                "webmozart\/assert": "^1.12|^2.0"
+            },
+            "require-dev": {
+                "phpecs\/phpecs": "^2.2",
+                "phpstan\/extension-installer": "^1.4",
+                "phpstan\/phpstan": "^2.1",
+                "phpunit\/phpunit": "^12.5",
+                "rector\/rector": "^2.2",
+                "rector\/swiss-knife": "^2.3",
+                "shipmonk\/composer-dependency-analyser": "^1.8",
+                "symplify\/phpstan-extensions": "^12.0",
+                "symplify\/phpstan-rules": "^14.9",
+                "tomasvotruba\/type-coverage": "^2.1",
+                "tomasvotruba\/unused-public": "^2.1",
+                "tracy\/tracy": "^2.11"
+            },
+            "time": "2026-01-01T17:39:37+00:00",
+            "default-branch": true,
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Behastan202601\\Entropy\\": "src"
+                }
+            },
+            "notification-url": "https:\/\/packagist.org\/downloads\/",
+            "license": [
+                "proprietary"
+            ],
+            "description": "Entropy framework",
+            "support": {
+                "issues": "https:\/\/github.com\/TomasVotruba\/entropy\/issues",
+                "source": "https:\/\/github.com\/TomasVotruba\/entropy\/tree\/main"
+            },
+            "install-path": "..\/entropy\/entropy"
+        },
+        {
+            "name": "nette\/utils",
+            "version": "v4.1.1",
+            "version_normalized": "4.1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https:\/\/github.com\/nette\/utils.git",
+                "reference": "c99059c0315591f1a0db7ad6002000288ab8dc72"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https:\/\/api.github.com\/repos\/nette\/utils\/zipball\/c99059c0315591f1a0db7ad6002000288ab8dc72",
+                "reference": "c99059c0315591f1a0db7ad6002000288ab8dc72",
+                "shasum": ""
+            },
+            "require": {
+                "php": "8.2 - 8.5"
+            },
+            "conflict": {
+                "nette\/finder": "<3",
+                "nette\/schema": "<1.2.2"
+            },
+            "require-dev": {
+                "jetbrains\/phpstorm-attributes": "^1.2",
+                "nette\/tester": "^2.5",
+                "phpstan\/phpstan-nette": "^2.0@stable",
+                "tracy\/tracy": "^2.9"
+            },
+            "suggest": {
+                "ext-gd": "to use Image",
+                "ext-iconv": "to use Strings::webalize(), toAscii(), chr() and reverse()",
+                "ext-intl": "to use Strings::webalize(), toAscii(), normalize() and compare()",
+                "ext-json": "to use Nette\\Utils\\Json",
+                "ext-mbstring": "to use Strings::lower() etc...",
+                "ext-tokenizer": "to use Nette\\Utils\\Reflection::getUseStatements()"
+            },
+            "time": "2025-12-22T12:14:32+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.1-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Behastan202601\\Nette\\": "src"
+                },
+                "classmap": [
+                    "src\/"
+                ]
+            },
+            "notification-url": "https:\/\/packagist.org\/downloads\/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https:\/\/davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https:\/\/nette.org\/contributors"
+                }
+            ],
+            "description": "\ud83d\udee0  Nette Utils: lightweight utilities for string & array manipulation, image handling, safe JSON encoding\/decoding, validation, slug or strong password generating etc.",
+            "homepage": "https:\/\/nette.org",
+            "keywords": [
+                "array",
+                "core",
+                "datetime",
+                "images",
+                "json",
+                "nette",
+                "paginator",
+                "password",
+                "slugify",
+                "string",
+                "unicode",
+                "utf-8",
+                "utility",
+                "validation"
+            ],
+            "support": {
+                "issues": "https:\/\/github.com\/nette\/utils\/issues",
+                "source": "https:\/\/github.com\/nette\/utils\/tree\/v4.1.1"
+            },
+            "install-path": "..\/nette\/utils"
+        },
+        {
+            "name": "nikic\/php-parser",
+            "version": "v5.7.0",
+            "version_normalized": "5.7.0.0",
+            "source": {
+                "type": "git",
+                "url": "https:\/\/github.com\/nikic\/PHP-Parser.git",
+                "reference": "dca41cd15c2ac9d055ad70dbfd011130757d1f82"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https:\/\/api.github.com\/repos\/nikic\/PHP-Parser\/zipball\/dca41cd15c2ac9d055ad70dbfd011130757d1f82",
+                "reference": "dca41cd15c2ac9d055ad70dbfd011130757d1f82",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-json": "*",
+                "ext-tokenizer": "*",
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "ircmaxell\/php-yacc": "^0.0.7",
+                "phpunit\/phpunit": "^9.0"
+            },
+            "time": "2025-12-06T11:56:16+00:00",
+            "bin": [
+                "bin\/php-parse"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.x-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Behastan202601\\PhpParser\\": "lib\/PhpParser"
+                }
+            },
+            "notification-url": "https:\/\/packagist.org\/downloads\/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nikita Popov"
+                }
+            ],
+            "description": "A PHP parser written in PHP",
+            "keywords": [
+                "parser",
+                "php"
+            ],
+            "support": {
+                "issues": "https:\/\/github.com\/nikic\/PHP-Parser\/issues",
+                "source": "https:\/\/github.com\/nikic\/PHP-Parser\/tree\/v5.7.0"
+            },
+            "install-path": "..\/nikic\/php-parser"
+        },
+        {
+            "name": "symfony\/finder",
+            "version": "v7.4.3",
+            "version_normalized": "7.4.3.0",
+            "source": {
+                "type": "git",
+                "url": "https:\/\/github.com\/symfony\/finder.git",
+                "reference": "fffe05569336549b20a1be64250b40516d6e8d06"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https:\/\/api.github.com\/repos\/symfony\/finder\/zipball\/fffe05569336549b20a1be64250b40516d6e8d06",
+                "reference": "fffe05569336549b20a1be64250b40516d6e8d06",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2"
+            },
+            "require-dev": {
+                "symfony\/filesystem": "^6.4|^7.0|^8.0"
+            },
+            "time": "2025-12-23T14:50:43+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Behastan202601\\Symfony\\Component\\Finder\\": ""
+                },
+                "exclude-from-classmap": [
+                    "\/Tests\/"
+                ]
+            },
+            "notification-url": "https:\/\/packagist.org\/downloads\/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https:\/\/symfony.com\/contributors"
+                }
+            ],
+            "description": "Finds files and directories via an intuitive fluent interface",
+            "homepage": "https:\/\/symfony.com",
+            "support": {
+                "source": "https:\/\/github.com\/symfony\/finder\/tree\/v7.4.3"
+            },
+            "funding": [
+                {
+                    "url": "https:\/\/symfony.com\/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https:\/\/github.com\/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https:\/\/github.com\/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https:\/\/tidelift.com\/funding\/github\/packagist\/symfony\/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "install-path": "..\/symfony\/finder"
+        },
+        {
+            "name": "webmozart\/assert",
+            "version": "1.12.1",
+            "version_normalized": "1.12.1.0",
+            "source": {
+                "type": "git",
+                "url": "https:\/\/github.com\/webmozarts\/assert.git",
+                "reference": "9be6926d8b485f55b9229203f962b51ed377ba68"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https:\/\/api.github.com\/repos\/webmozarts\/assert\/zipball\/9be6926d8b485f55b9229203f962b51ed377ba68",
+                "reference": "9be6926d8b485f55b9229203f962b51ed377ba68",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-date": "*",
+                "ext-filter": "*",
+                "php": "^7.2 || ^8.0"
+            },
+            "suggest": {
+                "ext-intl": "",
+                "ext-simplexml": "",
+                "ext-spl": ""
+            },
+            "time": "2025-10-29T15:56:20+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.10-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Webmozart\\Assert\\": "src\/"
+                }
+            },
+            "notification-url": "https:\/\/packagist.org\/downloads\/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@gmail.com"
+                }
+            ],
+            "description": "Assertions to validate method input\/output with nice error messages.",
+            "keywords": [
+                "assert",
+                "check",
+                "validate"
+            ],
+            "support": {
+                "issues": "https:\/\/github.com\/webmozarts\/assert\/issues",
+                "source": "https:\/\/github.com\/webmozarts\/assert\/tree\/1.12.1"
+            },
+            "install-path": "..\/webmozart\/assert"
+        }
+    ],
+    "dev": false,
+    "dev-package-names": []
+}
