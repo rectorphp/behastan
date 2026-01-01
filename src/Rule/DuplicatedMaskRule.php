@@ -48,11 +48,7 @@ final readonly class DuplicatedMaskRule implements RuleInterface
 
             $lineFilePaths = [];
             foreach ($sameMaksClassMethodContextDefinitions as $sameMakClassMethodContextDefinition) {
-                $relativeFilePath = substr(
-                    $sameMakClassMethodContextDefinition->getFilePath(),
-                    strlen($projectDirectory) + 1
-                );
-                $lineFilePaths[] = $relativeFilePath . ':' . $sameMakClassMethodContextDefinition->getMethodLine();
+                $lineFilePaths[] = $sameMakClassMethodContextDefinition->getFilePath() . ':' . $sameMakClassMethodContextDefinition->getMethodLine();
             }
 
             $ruleErrors[] = new RuleError(sprintf(
