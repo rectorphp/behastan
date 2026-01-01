@@ -47,6 +47,9 @@ final readonly class DuplicatedContextDefinitionContentsRule implements RuleInte
                 $lineFilePaths[] = $contextDefinition->getFilePath() . ':' . $contextDefinition->getMethodLine();
             }
 
+            // standardize order
+            sort($lineFilePaths);
+
             $errorMessage = sprintf(
                 'These %d definitions have different masks, but same method body: %s%s',
                 count($duplicatedContextDefinition),
