@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rector\Behastan\Tests\DefinitionMasksExtractor\Fixture;
+namespace Rector\Behastan\Tests\DefinitionPatternExtractor\Fixture;
 
 use Behat\Step\Then;
 

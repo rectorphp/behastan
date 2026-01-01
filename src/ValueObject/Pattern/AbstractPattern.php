@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Rector\Behastan\ValueObject\Mask;
+namespace Rector\Behastan\ValueObject\Pattern;
 
-use Rector\Behastan\Contract\MaskInterface;
+use Rector\Behastan\Contract\PatternInterface;
 
-abstract class AbstractMask implements MaskInterface
+abstract class AbstractPattern implements PatternInterface
 {
     public function __construct(
-        public readonly string $mask,
+        public readonly string $pattern,
         public readonly string $filePath,
         public readonly int $line,
         public readonly string $className,

@@ -14,7 +14,7 @@ final class RuleIdentifier
     /**
      * @var string
      */
-    public const DUPLICATED_MASKS = 'duplicated-masks';
+    public const DUPLICATED_PATTERNS = 'duplicated-patterns';
 
     /**
      * @var string

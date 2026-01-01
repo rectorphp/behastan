@@ -8,7 +8,7 @@ use PhpParser\Comment\Doc;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\ClassMethod;
 
-final class ClassMethodMasksResolver
+final class ClassMethodPatternResolver
 {
     /**
      * @var string
@@ -20,14 +20,14 @@ final class ClassMethodMasksResolver
      */
     public function resolve(ClassMethod $classMethod): array
     {
-        $rawMasks = [];
+        $rawPatterns = [];
 
         // 1. collect from docblock
         if ($classMethod->getDocComment() instanceof Doc) {
             preg_match_all(self::INSTRUCTION_DOCBLOCK_REGEX, $classMethod->getDocComment()->getText(), $match);
 
             foreach ($match['instruction'] as $instruction) {
-                $rawMasks[] = $this->clearMask($instruction);
+                $rawPatterns[] = $this->clearMask($instruction);
             }
         }
 
@@ -46,11 +46,11 @@ final class ClassMethodMasksResolver
                     continue;
                 }
 
-                $rawMasks[] = $firstArgValue->value;
+                $rawPatterns[] = $firstArgValue->value;
             }
         }
 
-        return $rawMasks;
+        return $rawPatterns;
     }
 
     private function clearMask(string $mask): string

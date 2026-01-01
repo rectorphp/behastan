@@ -7,7 +7,7 @@ namespace Rector\Behastan\Rule;
 use Rector\Behastan\Analyzer\UnusedDefinitionsAnalyzer;
 use Rector\Behastan\Contract\RuleInterface;
 use Rector\Behastan\Enum\RuleIdentifier;
-use Rector\Behastan\ValueObject\MaskCollection;
+use Rector\Behastan\ValueObject\PatternCollection;
 use Rector\Behastan\ValueObject\RuleError;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -26,17 +26,17 @@ final readonly class UnusedContextDefinitionsRule implements RuleInterface
     public function process(
         array $contextFiles,
         array $featureFiles,
-        MaskCollection $maskCollection,
+        PatternCollection $patternCollection,
         string $projectDirectory
     ): array {
-        $unusedMasks = $this->unusedDefinitionsAnalyzer->analyse($contextFiles, $featureFiles, $maskCollection);
+        $unusedMasks = $this->unusedDefinitionsAnalyzer->analyse($contextFiles, $featureFiles, $patternCollection);
 
         $ruleErrors = [];
 
         foreach ($unusedMasks as $unusedMask) {
             $errorMessage = sprintf(
                 'The mask "%s" and its definition %s::%s() is never used',
-                $unusedMask->mask,
+                $unusedMask->pattern,
                 $unusedMask->className,
                 $unusedMask->methodName
             );

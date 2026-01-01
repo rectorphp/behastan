@@ -4,36 +4,36 @@ declare(strict_types=1);
 
 namespace Rector\Behastan;
 
+use Entropy\Attributes\RelatedTest;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\NodeFinder;
-use Rector\Behastan\Analyzer\MaskAnalyzer;
+use Rector\Behastan\Analyzer\PatternAnalyzer;
 use Rector\Behastan\PhpParser\SimplePhpParser;
-use Rector\Behastan\Resolver\ClassMethodMasksResolver;
+use Rector\Behastan\Resolver\ClassMethodPatternResolver;
+use Rector\Behastan\Tests\DefinitionPatternExtractor\DefinitionPatternExtractorTest;
 use Rector\Behastan\ValueObject\ContextDefinition;
-use Rector\Behastan\ValueObject\Mask\ExactMask;
-use Rector\Behastan\ValueObject\Mask\NamedMask;
-use Rector\Behastan\ValueObject\Mask\RegexMask;
-use Rector\Behastan\ValueObject\Mask\SkippedMask;
-use Rector\Behastan\ValueObject\MaskCollection;
+use Rector\Behastan\ValueObject\Pattern\ExactPattern;
+use Rector\Behastan\ValueObject\Pattern\NamedPattern;
+use Rector\Behastan\ValueObject\Pattern\RegexPattern;
+use Rector\Behastan\ValueObject\Pattern\SkippedPattern;
+use Rector\Behastan\ValueObject\PatternCollection;
 use SplFileInfo;
 
-/**
- * @see \Rector\Behastan\Tests\DefinitionMasksExtractor\DefinitionMasksExtractorTest
- */
-final readonly class DefinitionMasksExtractor
+#[RelatedTest(DefinitionPatternExtractorTest::class)]
+final readonly class DefinitionPatternsExtractor
 {
     public function __construct(
         private SimplePhpParser $simplePhpParser,
         private NodeFinder $nodeFinder,
-        private ClassMethodMasksResolver $classMethodMasksResolver,
+        private ClassMethodPatternResolver $classMethodPatternResolver,
     ) {
     }
 
     /**
      * @param SplFileInfo[] $contextFiles
      */
-    public function extract(array $contextFiles): MaskCollection
+    public function extract(array $contextFiles): PatternCollection
     {
         $masks = [];
 
@@ -44,7 +44,7 @@ final readonly class DefinitionMasksExtractor
 
             // @todo edge case - handle next
             if (str_contains($rawMask, ' [:')) {
-                $masks[] = new SkippedMask(
+                $masks[] = new SkippedPattern(
                     $rawMask,
                     $classMethodContextDefinition->getFilePath(),
                     $classMethodContextDefinition->getMethodLine(),
@@ -55,8 +55,8 @@ final readonly class DefinitionMasksExtractor
             }
 
             // regex pattern, handled else-where
-            if (MaskAnalyzer::isRegex($rawMask)) {
-                $masks[] = new RegexMask(
+            if (PatternAnalyzer::isRegex($rawMask)) {
+                $masks[] = new RegexPattern(
                     $rawMask,
                     $classMethodContextDefinition->getFilePath(),
                     $classMethodContextDefinition->getMethodLine(),
@@ -67,9 +67,9 @@ final readonly class DefinitionMasksExtractor
             }
 
             // handled in mask one
-            if (MaskAnalyzer::isValueMask($rawMask)) {
+            if (PatternAnalyzer::isValuePattern($rawMask)) {
                 //  if (str_contains($rawMask, ':')) {
-                $masks[] = new NamedMask(
+                $masks[] = new NamedPattern(
                     $rawMask,
                     $classMethodContextDefinition->getFilePath(),
                     $classMethodContextDefinition->getMethodLine(),
@@ -82,7 +82,7 @@ final readonly class DefinitionMasksExtractor
             // remove \/ escape from mask
             $rawMask = str_replace('\/', '/', $rawMask);
 
-            $masks[] = new ExactMask(
+            $masks[] = new ExactPattern(
                 $rawMask,
                 $classMethodContextDefinition->getFilePath(),
                 $classMethodContextDefinition->getMethodLine(),
@@ -91,7 +91,7 @@ final readonly class DefinitionMasksExtractor
             );
         }
 
-        return new MaskCollection($masks);
+        return new PatternCollection($masks);
     }
 
     /**
@@ -123,7 +123,7 @@ final readonly class DefinitionMasksExtractor
             $className = $class->namespacedName->toString();
 
             foreach ($class->getMethods() as $classMethod) {
-                $rawMasks = $this->classMethodMasksResolver->resolve($classMethod);
+                $rawMasks = $this->classMethodPatternResolver->resolve($classMethod);
 
                 foreach ($rawMasks as $rawMask) {
                     $classMethodContextDefinitions[] = new ContextDefinition(

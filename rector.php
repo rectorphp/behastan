@@ -22,7 +22,7 @@ return RectorConfig::configure()
     ->withSkip([
         \Rector\Php55\Rector\String_\StringClassNameToClassConstantRector::class => [
             // keep string class names
-            __DIR__ . '/src/Resolver/ClassMethodMasksResolver.php',
+            __DIR__ . '/src/Resolver/ClassMethodPatternResolver.php',
         ],
     ])
     ->withImportNames()
