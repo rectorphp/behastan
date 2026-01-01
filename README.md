@@ -35,7 +35,7 @@ Here are the available rules:
 
 ### 1. Find duplicated definitions contents (`duplicated-contents`)
 
-Some definitions have similar masks, even identical contents:
+Some definitions have similar patterns, even identical contents:
 
 ```php
 use Behat\Step\When;
@@ -53,7 +53,7 @@ public function loadUserProfile()
 }
 ```
 
-Better use a one definition with single mask, to make your tests more precise and easier to maintain.
+Better use a one definition with single pattern, to make your tests more precise and easier to maintain.
 
 <br>
 

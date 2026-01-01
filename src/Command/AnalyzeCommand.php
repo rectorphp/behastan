@@ -7,9 +7,9 @@ namespace Rector\Behastan\Command;
 use Entropy\Console\Contract\CommandInterface;
 use Entropy\Console\Enum\ExitCode;
 use Entropy\Console\Output\OutputPrinter;
-use Rector\Behastan\DefinitionMasksExtractor;
+use Rector\Behastan\DefinitionPatternsExtractor;
 use Rector\Behastan\Finder\BehatMetafilesFinder;
-use Rector\Behastan\Reporting\MaskCollectionStatsPrinter;
+use Rector\Behastan\Reporting\PatternCollectionStatsPrinter;
 use Rector\Behastan\RulesRegistry;
 use Rector\Behastan\ValueObject\RuleError;
 use Webmozart\Assert\Assert;
@@ -17,8 +17,8 @@ use Webmozart\Assert\Assert;
 final readonly class AnalyzeCommand implements CommandInterface
 {
     public function __construct(
-        private DefinitionMasksExtractor $definitionMasksExtractor,
-        private MaskCollectionStatsPrinter $maskCollectionStatsPrinter,
+        private DefinitionPatternsExtractor $definitionPatternsExtractor,
+        private PatternCollectionStatsPrinter $patternCollectionStatsPrinter,
         private OutputPrinter $outputPrinter,
         private RulesRegistry $rulesRegistry,
     ) {
@@ -65,12 +65,12 @@ final readonly class AnalyzeCommand implements CommandInterface
             count($contextFileInfos),
             count($featureFileInfos)
         ));
-        $this->outputPrinter->writeln('<fg=yellow>Extracting definitions masks...</>');
+        $this->outputPrinter->writeln('<fg=yellow>Extracting definitions patterns...</>');
 
-        $maskCollection = $this->definitionMasksExtractor->extract($contextFileInfos);
+        $patternCollection = $this->definitionPatternsExtractor->extract($contextFileInfos);
         $this->outputPrinter->newLine();
 
-        $this->maskCollectionStatsPrinter->print($maskCollection);
+        $this->patternCollectionStatsPrinter->print($patternCollection);
         $this->outputPrinter->newLine();
 
         $this->outputPrinter->writeln('<fg=yellow>Running analysis...</>');
@@ -85,7 +85,7 @@ final readonly class AnalyzeCommand implements CommandInterface
                 continue;
             }
 
-            $ruleErrors = $rule->process($contextFileInfos, $featureFileInfos, $maskCollection, $projectDirectory);
+            $ruleErrors = $rule->process($contextFileInfos, $featureFileInfos, $patternCollection, $projectDirectory);
             $allRuleErrors = array_merge($allRuleErrors, $ruleErrors);
         }
 

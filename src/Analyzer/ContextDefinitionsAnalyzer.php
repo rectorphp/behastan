@@ -10,7 +10,7 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\NodeFinder;
 use PhpParser\PrettyPrinter\Standard;
 use Rector\Behastan\PhpParser\SimplePhpParser;
-use Rector\Behastan\Resolver\ClassMethodMasksResolver;
+use Rector\Behastan\Resolver\ClassMethodPatternResolver;
 use Rector\Behastan\ValueObject\ContextDefinition;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -25,7 +25,7 @@ final class ContextDefinitionsAnalyzer
         private readonly SimplePhpParser $simplePhpParser,
         private readonly NodeFinder $nodeFinder,
         private readonly Standard $printerStandard,
-        private readonly ClassMethodMasksResolver $classMethodMasksResolver,
+        private readonly ClassMethodPatternResolver $classMethodPatternResolver,
     ) {
     }
 
@@ -84,10 +84,10 @@ final class ContextDefinitionsAnalyzer
                 }
 
                 $classMethodHash = $this->createClassMethodHash($classMethod);
-                $rawMasks = $this->classMethodMasksResolver->resolve($classMethod);
+                $rawPatterns = $this->classMethodPatternResolver->resolve($classMethod);
 
-                // no masks :(
-                if ($rawMasks === []) {
+                // no patterns found :(
+                if ($rawPatterns === []) {
                     continue;
                 }
 
@@ -95,8 +95,8 @@ final class ContextDefinitionsAnalyzer
                     $contextFileInfo->getRealPath(),
                     $className,
                     $classMethod->name->toString(),
-                    // @todo what about multiple masks?
-                    $rawMasks[0],
+                    // @todo what about multiple patterns?
+                    $rawPatterns[0],
                     $classMethod->getStartLine()
                 );
 

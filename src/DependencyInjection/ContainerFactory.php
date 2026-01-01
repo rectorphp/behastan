@@ -17,9 +17,12 @@ final class ContainerFactory
         $container->autodiscover(__DIR__ . '/../Rule');
         $container->autodiscover(__DIR__ . '/../Command');
 
-        $container->service(RulesRegistry::class, function (Container $container) {
-            return new RulesRegistry($container->findByContract(RuleInterface::class));
-        });
+        $container->service(
+            RulesRegistry::class,
+            fn (Container $container): RulesRegistry => new RulesRegistry($container->findByContract(
+                RuleInterface::class
+            ))
+        );
 
         return $container;
     }

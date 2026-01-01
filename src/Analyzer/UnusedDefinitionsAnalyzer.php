@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Rector\Behastan\Analyzer;
 
-use Entropy\Console\Output\OutputPrinter;
 use Nette\Utils\Strings;
-use Rector\Behastan\DefinitionMasksExtractor;
+use Rector\Behastan\DefinitionPatternsExtractor;
 use Rector\Behastan\UsedInstructionResolver;
-use Rector\Behastan\ValueObject\Mask\AbstractMask;
-use Rector\Behastan\ValueObject\Mask\ExactMask;
-use Rector\Behastan\ValueObject\Mask\NamedMask;
-use Rector\Behastan\ValueObject\Mask\RegexMask;
-use Rector\Behastan\ValueObject\Mask\SkippedMask;
-use Rector\Behastan\ValueObject\MaskCollection;
+use Rector\Behastan\ValueObject\Pattern\AbstractPattern;
+use Rector\Behastan\ValueObject\Pattern\ExactPattern;
+use Rector\Behastan\ValueObject\Pattern\NamedPattern;
+use Rector\Behastan\ValueObject\Pattern\RegexPattern;
+use Rector\Behastan\ValueObject\Pattern\SkippedPattern;
+use Rector\Behastan\ValueObject\PatternCollection;
 use Symfony\Component\Finder\SplFileInfo;
 use Webmozart\Assert\Assert;
 
@@ -25,11 +24,11 @@ final readonly class UnusedDefinitionsAnalyzer
     /**
      * @var string
      */
-    private const MASK_VALUE_REGEX = '#(\:[\W\w]+)#';
+    private const PATTERN_VALUE_REGEX = '#(\:[\W\w]+)#';
 
     public function __construct(
         private UsedInstructionResolver $usedInstructionResolver,
-        private DefinitionMasksExtractor $definitionMasksExtractor,
+        private DefinitionPatternsExtractor $definitionPatternsExtractor,
     ) {
     }
 
@@ -37,9 +36,9 @@ final readonly class UnusedDefinitionsAnalyzer
      * @param SplFileInfo[] $contextFiles
      * @param SplFileInfo[] $featureFiles
      *
-     * @return AbstractMask[]
+     * @return AbstractPattern[]
      */
-    public function analyse(array $contextFiles, array $featureFiles, MaskCollection $maskCollection): array
+    public function analyse(array $contextFiles, array $featureFiles, PatternCollection $patternCollection): array
     {
         Assert::allIsInstanceOf($contextFiles, SplFileInfo::class);
         foreach ($contextFiles as $contextFile) {
@@ -51,25 +50,20 @@ final readonly class UnusedDefinitionsAnalyzer
             Assert::endsWith($featureFile->getFilename(), '.feature');
         }
 
-        $maskCollection = $this->definitionMasksExtractor->extract($contextFiles);
+        $patternCollection = $this->definitionPatternsExtractor->extract($contextFiles);
 
         $featureInstructions = $this->usedInstructionResolver->resolveInstructionsFromFeatureFiles($featureFiles);
-        //$maskProgressBar = $this->outputPrinter->createProgressBar($maskCollection->count());
 
-        $unusedMasks = [];
-        foreach ($maskCollection->all() as $mask) {
-            //            $maskProgressBar->advance();
-
-            if ($this->isMaskUsed($mask, $featureInstructions)) {
+        $unusedPatterns = [];
+        foreach ($patternCollection->all() as $pattern) {
+            if ($this->isPatternUsed($pattern, $featureInstructions)) {
                 continue;
             }
 
-            $unusedMasks[] = $mask;
+            $unusedPatterns[] = $pattern;
         }
 
-        //        $maskProgressBar->finish();
-
-        return $unusedMasks;
+        return $unusedPatterns;
     }
 
     /**
@@ -90,27 +84,27 @@ final readonly class UnusedDefinitionsAnalyzer
     /**
      * @param string[] $featureInstructions
      */
-    private function isMaskUsed(AbstractMask $mask, array $featureInstructions): bool
+    private function isPatternUsed(AbstractPattern $pattern, array $featureInstructions): bool
     {
-        if ($mask instanceof SkippedMask) {
+        if ($pattern instanceof SkippedPattern) {
             return true;
         }
 
         // is used?
-        if ($mask instanceof ExactMask && in_array($mask->mask, $featureInstructions, true)) {
+        if ($pattern instanceof ExactPattern && in_array($pattern->pattern, $featureInstructions, true)) {
             return true;
         }
 
         // is used?
-        if ($mask instanceof RegexMask && $this->isRegexDefinitionUsed($mask->mask, $featureInstructions)) {
+        if ($pattern instanceof RegexPattern && $this->isRegexDefinitionUsed($pattern->pattern, $featureInstructions)) {
             return true;
         }
 
-        if ($mask instanceof NamedMask) {
-            // normalize :mask definition to regex
-            $regexMask = '#' . Strings::replace($mask->mask, self::MASK_VALUE_REGEX, '(.*?)') . '#';
+        if ($pattern instanceof NamedPattern) {
+            // normalize :pattern definition to regex
+            $regexPattern = '#' . Strings::replace($pattern->pattern, self::PATTERN_VALUE_REGEX, '(.*?)') . '#';
 
-            if ($this->isRegexDefinitionUsed($regexMask, $featureInstructions)) {
+            if ($this->isRegexDefinitionUsed($regexPattern, $featureInstructions)) {
                 return true;
             }
         }

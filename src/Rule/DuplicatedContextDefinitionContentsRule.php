@@ -7,7 +7,7 @@ namespace Rector\Behastan\Rule;
 use Rector\Behastan\Analyzer\ContextDefinitionsAnalyzer;
 use Rector\Behastan\Contract\RuleInterface;
 use Rector\Behastan\Enum\RuleIdentifier;
-use Rector\Behastan\ValueObject\MaskCollection;
+use Rector\Behastan\ValueObject\PatternCollection;
 use Rector\Behastan\ValueObject\RuleError;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -27,7 +27,7 @@ final readonly class DuplicatedContextDefinitionContentsRule implements RuleInte
     public function process(
         array $contextFiles,
         array $featureFiles,
-        MaskCollection $maskCollection,
+        PatternCollection $patternCollection,
         string $projectDirectory
     ): array {
         $contextDefinitionByContentHash = $this->contextDefinitionsAnalyzer->resolveAndGroupByContentHash(

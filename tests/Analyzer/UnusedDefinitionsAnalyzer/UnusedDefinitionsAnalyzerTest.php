@@ -5,23 +5,23 @@ declare(strict_types=1);
 namespace Rector\Behastan\Tests\Analyzer\UnusedDefinitionsAnalyzer;
 
 use Rector\Behastan\Analyzer\UnusedDefinitionsAnalyzer;
-use Rector\Behastan\DefinitionMasksExtractor;
+use Rector\Behastan\DefinitionPatternsExtractor;
 use Rector\Behastan\Finder\BehatMetafilesFinder;
 use Rector\Behastan\Tests\AbstractTestCase;
-use Rector\Behastan\ValueObject\Mask\AbstractMask;
+use Rector\Behastan\ValueObject\Pattern\AbstractPattern;
 
 final class UnusedDefinitionsAnalyzerTest extends AbstractTestCase
 {
     private UnusedDefinitionsAnalyzer $unusedDefinitionsAnalyzer;
 
-    private DefinitionMasksExtractor $definitionMasksExtractor;
+    private DefinitionPatternsExtractor $definitionPatternsExtractor;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->unusedDefinitionsAnalyzer = $this->make(UnusedDefinitionsAnalyzer::class);
-        $this->definitionMasksExtractor = $this->make(DefinitionMasksExtractor::class);
+        $this->definitionPatternsExtractor = $this->make(DefinitionPatternsExtractor::class);
     }
 
     public function testEverythingUsed(): void
@@ -32,31 +32,35 @@ final class UnusedDefinitionsAnalyzerTest extends AbstractTestCase
         $this->assertCount(1, $featureFiles);
         $this->assertCount(1, $contextFiles);
 
-        $maskCollection = $this->definitionMasksExtractor->extract($contextFiles);
+        $patternCollection = $this->definitionPatternsExtractor->extract($contextFiles);
 
-        $unusedDefinitions = $this->unusedDefinitionsAnalyzer->analyse($contextFiles, $featureFiles, $maskCollection);
+        $unusedDefinitions = $this->unusedDefinitionsAnalyzer->analyse(
+            $contextFiles,
+            $featureFiles,
+            $patternCollection
+        );
 
         $this->assertCount(0, $unusedDefinitions);
     }
 
-    public function testFoundMask(): void
+    public function testFoundPattern(): void
     {
-        $featureFiles = BehatMetafilesFinder::findFeatureFiles([__DIR__ . '/Fixture/UnusedMasks']);
-        $contextFiles = BehatMetafilesFinder::findContextFiles([__DIR__ . '/Fixture/UnusedMasks']);
+        $featureFiles = BehatMetafilesFinder::findFeatureFiles([__DIR__ . '/Fixture/UnusedPattern']);
+        $contextFiles = BehatMetafilesFinder::findContextFiles([__DIR__ . '/Fixture/UnusedPattern']);
 
         $this->assertCount(1, $featureFiles);
         $this->assertCount(1, $contextFiles);
 
-        $maskCollection = $this->definitionMasksExtractor->extract($contextFiles);
+        $patternCollection = $this->definitionPatternsExtractor->extract($contextFiles);
 
-        $unusedMasks = $this->unusedDefinitionsAnalyzer->analyse($contextFiles, $featureFiles, $maskCollection);
+        $unusedMasks = $this->unusedDefinitionsAnalyzer->analyse($contextFiles, $featureFiles, $patternCollection);
 
         $this->assertCount(1, $unusedMasks);
-        $this->assertContainsOnlyInstancesOf(AbstractMask::class, $unusedMasks);
+        $this->assertContainsOnlyInstancesOf(AbstractPattern::class, $unusedMasks);
 
-        /** @var AbstractMask $unusedMask */
+        /** @var AbstractPattern $unusedMask */
         $unusedMask = $unusedMasks[0];
-        $this->assertSame(__DIR__ . '/Fixture/UnusedMasks/BehatContext.php', $unusedMask->filePath);
-        $this->assertSame('never used', $unusedMask->mask);
+        $this->assertSame(__DIR__ . '/Fixture/UnusedPattern/BehatContext.php', $unusedMask->filePath);
+        $this->assertSame('never used', $unusedMask->pattern);
     }
 }
