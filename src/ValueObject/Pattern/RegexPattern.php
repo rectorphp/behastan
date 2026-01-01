@@ -1,9 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Rector\Behastan\ValueObject\Pattern;
 
-final class RegexPattern extends AbstractPattern
+final class RegexPattern extends \Rector\Behastan\ValueObject\Pattern\AbstractPattern
 {
 }
