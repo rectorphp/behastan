@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Rector\Behastan\Analyzer;
 
-use Nette\Utils\Strings;
+use Behastan202601\Nette\Utils\Strings;
 use Rector\Behastan\DefinitionPatternsExtractor;
 use Rector\Behastan\UsedInstructionResolver;
 use Rector\Behastan\ValueObject\Pattern\AbstractPattern;
@@ -13,25 +12,32 @@ use Rector\Behastan\ValueObject\Pattern\NamedPattern;
 use Rector\Behastan\ValueObject\Pattern\RegexPattern;
 use Rector\Behastan\ValueObject\Pattern\SkippedPattern;
 use Rector\Behastan\ValueObject\PatternCollection;
-use Symfony\Component\Finder\SplFileInfo;
+use Behastan202601\Symfony\Component\Finder\SplFileInfo;
 use Webmozart\Assert\Assert;
-
 /**
  * @see \Rector\Behastan\Tests\Analyzer\UnusedDefinitionsAnalyzer\UnusedDefinitionsAnalyzerTest
  */
-final readonly class UnusedDefinitionsAnalyzer
+final class UnusedDefinitionsAnalyzer
 {
+    /**
+     * @readonly
+     * @var \Rector\Behastan\UsedInstructionResolver
+     */
+    private $usedInstructionResolver;
+    /**
+     * @readonly
+     * @var \Rector\Behastan\DefinitionPatternsExtractor
+     */
+    private $definitionPatternsExtractor;
     /**
      * @var string
      */
     private const PATTERN_VALUE_REGEX = '#(\:[\W\w]+)#';
-
-    public function __construct(
-        private UsedInstructionResolver $usedInstructionResolver,
-        private DefinitionPatternsExtractor $definitionPatternsExtractor,
-    ) {
+    public function __construct(UsedInstructionResolver $usedInstructionResolver, DefinitionPatternsExtractor $definitionPatternsExtractor)
+    {
+        $this->usedInstructionResolver = $usedInstructionResolver;
+        $this->definitionPatternsExtractor = $definitionPatternsExtractor;
     }
-
     /**
      * @param SplFileInfo[] $contextFiles
      * @param SplFileInfo[] $featureFiles
@@ -44,28 +50,21 @@ final readonly class UnusedDefinitionsAnalyzer
         foreach ($contextFiles as $contextFile) {
             Assert::endsWith($contextFile->getFilename(), '.php');
         }
-
         Assert::allIsInstanceOf($featureFiles, SplFileInfo::class);
         foreach ($featureFiles as $featureFile) {
             Assert::endsWith($featureFile->getFilename(), '.feature');
         }
-
         $patternCollection = $this->definitionPatternsExtractor->extract($contextFiles);
-
         $featureInstructions = $this->usedInstructionResolver->resolveInstructionsFromFeatureFiles($featureFiles);
-
         $unusedPatterns = [];
         foreach ($patternCollection->all() as $pattern) {
             if ($this->isPatternUsed($pattern, $featureInstructions)) {
                 continue;
             }
-
             $unusedPatterns[] = $pattern;
         }
-
         return $unusedPatterns;
     }
-
     /**
      * @param string[] $featureInstructions
      */
@@ -74,41 +73,34 @@ final readonly class UnusedDefinitionsAnalyzer
         foreach ($featureInstructions as $featureInstruction) {
             if (Strings::match($featureInstruction, $regexBehatDefinition)) {
                 // it is used!
-                return true;
+                return \true;
             }
         }
-
-        return false;
+        return \false;
     }
-
     /**
      * @param string[] $featureInstructions
      */
     private function isPatternUsed(AbstractPattern $pattern, array $featureInstructions): bool
     {
         if ($pattern instanceof SkippedPattern) {
-            return true;
+            return \true;
         }
-
         // is used?
-        if ($pattern instanceof ExactPattern && in_array($pattern->pattern, $featureInstructions, true)) {
-            return true;
+        if ($pattern instanceof ExactPattern && in_array($pattern->pattern, $featureInstructions, \true)) {
+            return \true;
         }
-
         // is used?
         if ($pattern instanceof RegexPattern && $this->isRegexDefinitionUsed($pattern->pattern, $featureInstructions)) {
-            return true;
+            return \true;
         }
-
         if ($pattern instanceof NamedPattern) {
             // normalize :pattern definition to regex
             $regexPattern = '#' . Strings::replace($pattern->pattern, self::PATTERN_VALUE_REGEX, '(.*?)') . '#';
-
             if ($this->isRegexDefinitionUsed($regexPattern, $featureInstructions)) {
-                return true;
+                return \true;
             }
         }
-
-        return false;
+        return \false;
     }
 }
