@@ -101,8 +101,10 @@ final readonly class AnalyzeCommand implements CommandInterface
         $i = 1;
         foreach ($allRuleErrors as $allRuleError) {
             $this->outputPrinter->writeln(
-                sprintf('<fg=yellow>%d) %s</> [id: <fg=cyan>[%s]</>]', $i, $allRuleError->getMessage(), $allRuleError->getIdentifier())
+                sprintf('<fg=yellow>%d) %s</> [id: <fg=cyan>%s</>]', $i, $allRuleError->getMessage(), $allRuleError->getIdentifier()),
+                1
             );
+
             foreach ($allRuleError->getLineFilePaths() as $lineFilePath) {
                 // compared to listing() this allow to make paths clickable in IDE
                 // use relative paths to getcwd()
