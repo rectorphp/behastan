@@ -57,9 +57,9 @@ Better use a one definition with single pattern, to make your tests more precise
 
 <br>
 
-### 2. Find duplicated masks (`duplicated-masks`)
+### 2. Find duplicated patterns (`duplicated-patterns`)
 
-Same as services, there should be unique definition masks:
+Same as services, there should be unique definition patterns:
 
 ```php
 use Behat\Step\When;

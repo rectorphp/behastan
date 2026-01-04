@@ -35,17 +35,17 @@ final readonly class DefinitionPatternsExtractor
      */
     public function extract(array $contextFiles): PatternCollection
     {
-        $masks = [];
+        $patterns = [];
 
-        $classMethodContextDefinitions = $this->resolveMasksFromFiles($contextFiles);
+        $classMethodContextDefinitions = $this->resolvePatternsFromFiles($contextFiles);
 
         foreach ($classMethodContextDefinitions as $classMethodContextDefinition) {
-            $rawMask = $classMethodContextDefinition->getMask();
+            $rawPattern = $classMethodContextDefinition->getPattern();
 
             // @todo edge case - handle next
-            if (str_contains($rawMask, ' [:')) {
-                $masks[] = new SkippedPattern(
-                    $rawMask,
+            if (str_contains($rawPattern, ' [:')) {
+                $patterns[] = new SkippedPattern(
+                    $rawPattern,
                     $classMethodContextDefinition->getFilePath(),
                     $classMethodContextDefinition->getMethodLine(),
                     $classMethodContextDefinition->getClass(),
@@ -55,9 +55,9 @@ final readonly class DefinitionPatternsExtractor
             }
 
             // regex pattern, handled else-where
-            if (PatternAnalyzer::isRegex($rawMask)) {
-                $masks[] = new RegexPattern(
-                    $rawMask,
+            if (PatternAnalyzer::isRegex($rawPattern)) {
+                $patterns[] = new RegexPattern(
+                    $rawPattern,
                     $classMethodContextDefinition->getFilePath(),
                     $classMethodContextDefinition->getMethodLine(),
                     $classMethodContextDefinition->getClass(),
@@ -66,11 +66,11 @@ final readonly class DefinitionPatternsExtractor
                 continue;
             }
 
-            // handled in mask one
-            if (PatternAnalyzer::isValuePattern($rawMask)) {
-                //  if (str_contains($rawMask, ':')) {
-                $masks[] = new NamedPattern(
-                    $rawMask,
+            // handled in pattern one
+            if (PatternAnalyzer::isValuePattern($rawPattern)) {
+                //  if (str_contains($rawPattern, ':')) {
+                $patterns[] = new NamedPattern(
+                    $rawPattern,
                     $classMethodContextDefinition->getFilePath(),
                     $classMethodContextDefinition->getMethodLine(),
                     $classMethodContextDefinition->getClass(),
@@ -79,11 +79,11 @@ final readonly class DefinitionPatternsExtractor
                 continue;
             }
 
-            // remove \/ escape from mask
-            $rawMask = str_replace('\/', '/', $rawMask);
+            // remove \/ escape from pattern
+            $rawPattern = str_replace('\/', '/', $rawPattern);
 
-            $masks[] = new ExactPattern(
-                $rawMask,
+            $patterns[] = new ExactPattern(
+                $rawPattern,
                 $classMethodContextDefinition->getFilePath(),
                 $classMethodContextDefinition->getMethodLine(),
                 $classMethodContextDefinition->getClass(),
@@ -91,14 +91,14 @@ final readonly class DefinitionPatternsExtractor
             );
         }
 
-        return new PatternCollection($masks);
+        return new PatternCollection($patterns);
     }
 
     /**
      * @param SplFileInfo[] $fileInfos
      * @return ContextDefinition[]
      */
-    private function resolveMasksFromFiles(array $fileInfos): array
+    private function resolvePatternsFromFiles(array $fileInfos): array
     {
         $classMethodContextDefinitions = [];
 
@@ -123,14 +123,14 @@ final readonly class DefinitionPatternsExtractor
             $className = $class->namespacedName->toString();
 
             foreach ($class->getMethods() as $classMethod) {
-                $rawMasks = $this->classMethodPatternResolver->resolve($classMethod);
+                $rawPatterns = $this->classMethodPatternResolver->resolve($classMethod);
 
-                foreach ($rawMasks as $rawMask) {
+                foreach ($rawPatterns as $rawPattern) {
                     $classMethodContextDefinitions[] = new ContextDefinition(
                         $fileInfo->getRealPath(),
                         $className,
                         $classMethod->name->toString(),
-                        $rawMask,
+                        $rawPattern,
                         $classMethod->getStartLine()
                     );
                 }

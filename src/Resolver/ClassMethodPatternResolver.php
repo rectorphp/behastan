@@ -27,7 +27,7 @@ final class ClassMethodPatternResolver
             preg_match_all(self::INSTRUCTION_DOCBLOCK_REGEX, $classMethod->getDocComment()->getText(), $match);
 
             foreach ($match['instruction'] as $instruction) {
-                $rawPatterns[] = $this->clearMask($instruction);
+                $rawPatterns[] = $this->clearPattern($instruction);
             }
         }
 
@@ -53,12 +53,12 @@ final class ClassMethodPatternResolver
         return $rawPatterns;
     }
 
-    private function clearMask(string $mask): string
+    private function clearPattern(string $pattern): string
     {
-        $mask = trim($mask);
+        $pattern = trim($pattern);
 
-        // clear extra quote escaping that would cause miss-match with feature masks
-        $mask = str_replace('\\\'', "'", $mask);
-        return str_replace('\\/', '/', $mask);
+        // clear extra quote escaping that would cause miss-match with feature patterns
+        $pattern = str_replace('\\\'', "'", $pattern);
+        return str_replace('\\/', '/', $pattern);
     }
 }

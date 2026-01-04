@@ -29,21 +29,21 @@ final readonly class UnusedContextDefinitionsRule implements RuleInterface
         PatternCollection $patternCollection,
         string $projectDirectory
     ): array {
-        $unusedMasks = $this->unusedDefinitionsAnalyzer->analyse($contextFiles, $featureFiles, $patternCollection);
+        $unusedPatterns = $this->unusedDefinitionsAnalyzer->analyse($contextFiles, $featureFiles, $patternCollection);
 
         $ruleErrors = [];
 
-        foreach ($unusedMasks as $unusedMask) {
+        foreach ($unusedPatterns as $unusedPattern) {
             $errorMessage = sprintf(
-                'The mask "%s" and its definition %s::%s() is never used',
-                $unusedMask->pattern,
-                $unusedMask->className,
-                $unusedMask->methodName
+                'The pattern "%s" and its definition %s::%s() is never used',
+                $unusedPattern->pattern,
+                $unusedPattern->className,
+                $unusedPattern->methodName
             );
 
             $ruleErrors[] = new RuleError(
                 $errorMessage,
-                [$unusedMask->filePath . ':' . $unusedMask->line],
+                [$unusedPattern->filePath . ':' . $unusedPattern->line],
                 $this->getIdentifier()
             );
         }

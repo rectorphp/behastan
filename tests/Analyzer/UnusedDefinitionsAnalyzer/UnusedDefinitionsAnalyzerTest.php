@@ -53,14 +53,14 @@ final class UnusedDefinitionsAnalyzerTest extends AbstractTestCase
 
         $patternCollection = $this->definitionPatternsExtractor->extract($contextFiles);
 
-        $unusedMasks = $this->unusedDefinitionsAnalyzer->analyse($contextFiles, $featureFiles, $patternCollection);
+        $unusedPatterns = $this->unusedDefinitionsAnalyzer->analyse($contextFiles, $featureFiles, $patternCollection);
 
-        $this->assertCount(1, $unusedMasks);
-        $this->assertContainsOnlyInstancesOf(AbstractPattern::class, $unusedMasks);
+        $this->assertCount(1, $unusedPatterns);
+        $this->assertContainsOnlyInstancesOf(AbstractPattern::class, $unusedPatterns);
 
-        /** @var AbstractPattern $unusedMask */
-        $unusedMask = $unusedMasks[0];
-        $this->assertSame(__DIR__ . '/Fixture/UnusedPattern/BehatContext.php', $unusedMask->filePath);
-        $this->assertSame('never used', $unusedMask->pattern);
+        /** @var AbstractPattern $unusedPattern */
+        $unusedPattern = $unusedPatterns[0];
+        $this->assertSame(__DIR__ . '/Fixture/UnusedPattern/BehatContext.php', $unusedPattern->filePath);
+        $this->assertSame('never used', $unusedPattern->pattern);
     }
 }
