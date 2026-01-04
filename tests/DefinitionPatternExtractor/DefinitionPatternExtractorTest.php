@@ -31,18 +31,18 @@ final class DefinitionPatternExtractorTest extends AbstractTestCase
 
         $this->assertCount(3, $patternCollection->all());
 
-        $exactMasks = $patternCollection->byType(ExactPattern::class);
-        $this->assertCount(3, $exactMasks);
-        $this->assertContainsOnlyInstancesOf(ExactPattern::class, $exactMasks);
+        $exactPatterns = $patternCollection->byType(ExactPattern::class);
+        $this->assertCount(3, $exactPatterns);
+        $this->assertContainsOnlyInstancesOf(ExactPattern::class, $exactPatterns);
 
-        $firstExactMask = $exactMasks[0];
+        $firstExactPattern = $exactPatterns[0];
 
-        $this->assertSame('I click homepage', $firstExactMask->pattern);
-        $this->assertSame(AnotherBehatContext::class, $firstExactMask->className);
-        $this->assertSame(__DIR__ . '/Fixture/AnotherBehatContext.php', $firstExactMask->filePath);
+        $this->assertSame('I click homepage', $firstExactPattern->pattern);
+        $this->assertSame(AnotherBehatContext::class, $firstExactPattern->className);
+        $this->assertSame(__DIR__ . '/Fixture/AnotherBehatContext.php', $firstExactPattern->filePath);
 
-        $slashMask = $exactMasks[2];
+        $slashPattern = $exactPatterns[2];
 
-        $this->assertSame('Do this and / that', $slashMask->pattern);
+        $this->assertSame('Do this and / that', $slashPattern->pattern);
     }
 }

@@ -40,10 +40,10 @@ final readonly class DuplicatedContextDefinitionContentsRule implements RuleInte
         $duplicatedContextDefinitionByContentsHash = $this->filterOutNotDuplicated($contextDefinitionByContentHash);
 
         foreach ($duplicatedContextDefinitionByContentsHash as $duplicatedContextDefinition) {
-            $maskStrings = '';
+            $patternStrings = '';
             $lineFilePaths = [];
             foreach ($duplicatedContextDefinition as $contextDefinition) {
-                $maskStrings .= ' * ' . $contextDefinition->getMask() . "\n";
+                $patternStrings .= ' * ' . $contextDefinition->getPattern() . "\n";
                 $lineFilePaths[] = $contextDefinition->getFilePath() . ':' . $contextDefinition->getMethodLine();
             }
 
@@ -51,10 +51,10 @@ final readonly class DuplicatedContextDefinitionContentsRule implements RuleInte
             sort($lineFilePaths);
 
             $errorMessage = sprintf(
-                'These %d definitions have different masks, but same method body: %s%s',
+                'These %d definitions have different patterns, but same method body: %s%s',
                 count($duplicatedContextDefinition),
                 PHP_EOL,
-                $maskStrings
+                $patternStrings
             );
 
             $ruleErrors[] = new RuleError($errorMessage, $lineFilePaths, $this->getIdentifier());

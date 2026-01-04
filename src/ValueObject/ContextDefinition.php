@@ -12,7 +12,7 @@ final class ContextDefinition
         private readonly string $filePath,
         private readonly string $class,
         private readonly string $methodName,
-        private readonly string $mask,
+        private readonly string $pattern,
         private readonly int $methodLine
     ) {
     }
@@ -32,9 +32,9 @@ final class ContextDefinition
         return $this->methodName;
     }
 
-    public function getMask(): string
+    public function getPattern(): string
     {
-        return $this->mask;
+        return $this->pattern;
     }
 
     public function getMethodLine(): int
@@ -49,7 +49,7 @@ final class ContextDefinition
     {
         $usageCount = 0;
         foreach ($featureInstructions as $featureInstruction) {
-            if ($this->mask === $featureInstruction) {
+            if ($this->pattern === $featureInstruction) {
                 ++$usageCount;
             }
         }

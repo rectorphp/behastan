@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rector\Behastan\Tests\Analyzer\UnusedDefinitionsAnalyzer\Fixture\UnusedMasks;
+namespace Rector\Behastan\Tests\Analyzer\UnusedDefinitionsAnalyzer\Fixture\UnusedPattern;
 
 final class BehatContext
 {

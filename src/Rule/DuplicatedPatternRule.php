@@ -12,7 +12,7 @@ use Rector\Behastan\ValueObject\PatternCollection;
 use Rector\Behastan\ValueObject\RuleError;
 use Symfony\Component\Finder\SplFileInfo;
 
-final readonly class DuplicatedMaskRule implements RuleInterface
+final readonly class DuplicatedPatternRule implements RuleInterface
 {
     public function __construct(
         private ContextDefinitionsAnalyzer $classMethodContextDefinitionsAnalyzer
@@ -30,17 +30,17 @@ final readonly class DuplicatedMaskRule implements RuleInterface
         PatternCollection $patternCollection,
         string $projectDirectory
     ): array {
-        // 1. find duplicated masks, e.g. if 2 methods have the same mask, its a race condition problem
+        // 1. find duplicated patterns, e.g. if 2 methods have the same pattern, its a race condition problem
         $classMethodContextDefinitions = $this->classMethodContextDefinitionsAnalyzer->resolve($contextFiles);
 
-        $groupedByMask = [];
+        $groupedByPattern = [];
         foreach ($classMethodContextDefinitions as $classMethodContextDefinition) {
-            $groupedByMask[$classMethodContextDefinition->getMask()][] = $classMethodContextDefinition;
+            $groupedByPattern[$classMethodContextDefinition->getPattern()][] = $classMethodContextDefinition;
         }
 
         $ruleErrors = [];
 
-        foreach ($groupedByMask as $mask => $sameMaksClassMethodContextDefinitions) {
+        foreach ($groupedByPattern as $pattern => $sameMaksClassMethodContextDefinitions) {
             /** @var ContextDefinition[] $sameMaksClassMethodContextDefinitions */
             if (count($sameMaksClassMethodContextDefinitions) === 1) {
                 continue;
@@ -52,8 +52,8 @@ final readonly class DuplicatedMaskRule implements RuleInterface
             }
 
             $ruleErrors[] = new RuleError(sprintf(
-                'Duplicated mask "%s"',
-                $mask
+                'Duplicated pattern "%s"',
+                $pattern
             ), $lineFilePaths, $this->getIdentifier());
         }
 

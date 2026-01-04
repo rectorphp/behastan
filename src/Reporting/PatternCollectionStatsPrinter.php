@@ -25,27 +25,27 @@ final readonly class PatternCollectionStatsPrinter
         $this->outputPrinter->writeln(sprintf(' * %d /regex/', $patternCollection->countByType(RegexPattern::class)));
         $this->outputPrinter->writeln(sprintf(' * %d :named', $patternCollection->countByType(NamedPattern::class)));
 
-        $this->printSkippedMasks($patternCollection);
+        $this->printSkippedPatterns($patternCollection);
     }
 
-    private function printSkippedMasks(PatternCollection $patternCollection): void
+    private function printSkippedPatterns(PatternCollection $patternCollection): void
     {
-        $skippedMasks = $patternCollection->byType(SkippedPattern::class);
-        if ($skippedMasks === []) {
+        $skippedPatterns = $patternCollection->byType(SkippedPattern::class);
+        if ($skippedPatterns === []) {
             return;
         }
 
-        $skippedMasksValues = [];
-        foreach ($skippedMasks as $skippedMask) {
-            $skippedMasksValues[] = $skippedMask->pattern;
+        $skippedPatternsValues = [];
+        foreach ($skippedPatterns as $skippedPattern) {
+            $skippedPatternsValues[] = $skippedPattern->pattern;
         }
 
-        $skippedMasksString = implode('", "', $skippedMasksValues);
+        $skippedPatternsString = implode('", "', $skippedPatternsValues);
 
         $this->outputPrinter->writeln(sprintf(
             ' * %d skipped ("%s")',
             $patternCollection->countByType(SkippedPattern::class),
-            $skippedMasksString
+            $skippedPatternsString
         ));
     }
 }

@@ -9,10 +9,10 @@ use Rector\Behastan\ValueObject\Pattern\AbstractPattern;
 final readonly class PatternCollection
 {
     /**
-     * @param AbstractPattern[] $masks
+     * @param AbstractPattern[] $patterns
      */
     public function __construct(
-        private array $masks
+        private array $patterns
     ) {
     }
 
@@ -21,13 +21,13 @@ final readonly class PatternCollection
      */
     public function countByType(string $type): int
     {
-        $masksByType = $this->byType($type);
-        return count($masksByType);
+        $patternsByType = $this->byType($type);
+        return count($patternsByType);
     }
 
     public function count(): int
     {
-        return count($this->masks);
+        return count($this->patterns);
     }
 
     /**
@@ -35,17 +35,17 @@ final readonly class PatternCollection
      */
     public function all(): array
     {
-        return $this->masks;
+        return $this->patterns;
     }
 
     /**
-     * @template TMask as AbstractPattern
+     * @template TPattern as AbstractPattern
      *
-     * @param class-string<TMask> $type
-     * @return TMask[]
+     * @param class-string<TPattern> $type
+     * @return TPattern[]
      */
     public function byType(string $type): array
     {
-        return array_filter($this->masks, fn (AbstractPattern $pattern): bool => $pattern instanceof $type);
+        return array_filter($this->patterns, fn (AbstractPattern $pattern): bool => $pattern instanceof $type);
     }
 }
