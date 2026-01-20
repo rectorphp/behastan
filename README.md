@@ -1,6 +1,6 @@
 # Behastan - Modern Static analysis for Behat tests
 
-[![Downloads total](https://img.shields.io/packagist/dt/behastan/behastan.svg?style=flat-square)](https://packagist.org/packages/behastan/behastan/stats)
+[![Downloads total](https://img.shields.io/packagist/dt/rector/behastan.svg?style=flat-square)](https://packagist.org/packages/rector/behastan/stats)
 
 Find unused and duplicated definitions easily &ndash; without running Behat tests.
 
