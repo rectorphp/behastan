@@ -14,8 +14,8 @@ abstract class AbstractTestCase extends TestCase
 
     protected function setUp(): void
     {
-        $containerFactory = new BehastanContainerFactory();
-        $this->container = $containerFactory->create();
+        $behastanContainerFactory = new BehastanContainerFactory();
+        $this->container = $behastanContainerFactory->create();
     }
 
     /**

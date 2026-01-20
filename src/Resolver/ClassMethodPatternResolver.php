@@ -10,10 +10,7 @@ use PhpParser\Node\Stmt\ClassMethod;
 
 final class ClassMethodPatternResolver
 {
-    /**
-     * @var string
-     */
-    private const INSTRUCTION_DOCBLOCK_REGEX = '#\@(Given|Then|When)\s+(?<instruction>.*?)\n#m';
+    private const string INSTRUCTION_DOCBLOCK_REGEX = '#\@(Given|Then|When)\s+(?<instruction>.*?)\n#m';
 
     /**
      * @return string[]

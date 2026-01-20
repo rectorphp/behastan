@@ -6,18 +6,9 @@ namespace Rector\Behastan\Enum;
 
 final class RuleIdentifier
 {
-    /**
-     * @var string
-     */
-    public const DUPLICATED_CONTENTS = 'duplicated-contents';
+    public const string DUPLICATED_CONTENTS = 'duplicated-contents';
 
-    /**
-     * @var string
-     */
-    public const DUPLICATED_PATTERNS = 'duplicated-patterns';
+    public const string DUPLICATED_PATTERNS = 'duplicated-patterns';
 
-    /**
-     * @var string
-     */
-    public const UNUSED_DEFINITIONS = 'unused-definitions';
+    public const string UNUSED_DEFINITIONS = 'unused-definitions';
 }

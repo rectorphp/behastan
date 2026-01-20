@@ -21,10 +21,7 @@ use Webmozart\Assert\Assert;
  */
 final readonly class UnusedDefinitionsAnalyzer
 {
-    /**
-     * @var string
-     */
-    private const PATTERN_VALUE_REGEX = '#(\:[\W\w]+)#';
+    private const string PATTERN_VALUE_REGEX = '#(\:[\W\w]+)#';
 
     public function __construct(
         private UsedInstructionResolver $usedInstructionResolver,

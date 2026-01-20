@@ -6,10 +6,7 @@ namespace Rector\Behastan\Analyzer;
 
 final class PatternAnalyzer
 {
-    /**
-     * @var string
-     */
-    private const PATTERN_REGEX = '#(\:[\W\w]+)#';
+    private const string PATTERN_REGEX = '#(\:[\W\w]+)#';
 
     public static function isRegex(string $rawPattern): bool
     {
