@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Rector\Behastan\DependencyInjection\ContainerFactory;
+use Rector\Behastan\DependencyInjection\BehastanContainerFactory;
 
 $possibleAutoloadPaths = [
     // dependency
@@ -25,7 +25,7 @@ if (file_exists($scoperAutoloadFilepath)) {
     require_once $scoperAutoloadFilepath;
 }
 
-$container = ContainerFactory::create();
+$container = BehastanContainerFactory::create();
 $consoleApplication = $container->make(\Entropy\Console\ConsoleApplication::class);
 
 $exitCode = $consoleApplication->run($argv);

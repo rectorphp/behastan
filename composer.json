@@ -6,7 +6,7 @@
         "bin/behastan"
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "nette/utils": "^4.0",
         "entropy/entropy": "dev-main",
         "nikic/php-parser": "^5.6",
@@ -15,11 +15,12 @@
     },
     "require-dev": {
         "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^11.5",
-        "rector/rector": "^2.2",
-        "phpecs/phpecs": "^2.2",
-        "tomasvotruba/class-leak": "^2.0",
+        "phpstan/phpstan": "^2.1.34",
+        "phpunit/phpunit": "^12.5",
+        "rector/jack": "^0.5.1",
+        "rector/rector": "^2.3.2",
+        "symplify/easy-coding-standard": "^13.0",
+        "tomasvotruba/class-leak": "^2.1",
         "tracy/tracy": "^2.10"
     },
     "autoload": {

@@ -6,7 +6,7 @@ namespace Rector\Behastan\Tests;
 
 use Entropy\Container\Container;
 use PHPUnit\Framework\TestCase;
-use Rector\Behastan\DependencyInjection\ContainerFactory;
+use Rector\Behastan\DependencyInjection\BehastanContainerFactory;
 
 abstract class AbstractTestCase extends TestCase
 {
@@ -14,7 +14,7 @@ abstract class AbstractTestCase extends TestCase
 
     protected function setUp(): void
     {
-        $containerFactory = new ContainerFactory();
+        $containerFactory = new BehastanContainerFactory();
         $this->container = $containerFactory->create();
     }
 

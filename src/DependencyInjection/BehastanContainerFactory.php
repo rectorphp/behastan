@@ -8,7 +8,7 @@ use Entropy\Container\Container;
 use Rector\Behastan\Contract\RuleInterface;
 use Rector\Behastan\RulesRegistry;
 
-final class ContainerFactory
+final class BehastanContainerFactory
 {
     public static function create(): Container
     {
