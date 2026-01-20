@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Rector\Behastan\Contract;
 
 use Rector\Behastan\Enum\RuleIdentifier;
 use Rector\Behastan\ValueObject\PatternCollection;
 use Rector\Behastan\ValueObject\RuleError;
-use Symfony\Component\Finder\SplFileInfo;
-
+use Behastan202601\Symfony\Component\Finder\SplFileInfo;
 interface RuleInterface
 {
     /**
@@ -17,13 +15,7 @@ interface RuleInterface
      *
      * @return RuleError[]
      */
-    public function process(
-        array $contextFiles,
-        array $featureFiles,
-        PatternCollection $patternCollection,
-        string $projectDirectory
-    ): array;
-
+    public function process(array $contextFiles, array $featureFiles, PatternCollection $patternCollection, string $projectDirectory): array;
     /**
      * @return RuleIdentifier::*
      */
