@@ -19,6 +19,7 @@ use Rector\Behastan\ValueObject\Pattern\RegexPattern;
 use Rector\Behastan\ValueObject\Pattern\SkippedPattern;
 use Rector\Behastan\ValueObject\PatternCollection;
 use SplFileInfo;
+use Webmozart\Assert\Assert;
 
 #[RelatedTest(DefinitionPatternExtractorTest::class)]
 final readonly class DefinitionPatternsExtractor
@@ -35,6 +36,10 @@ final readonly class DefinitionPatternsExtractor
      */
     public function extract(array $contextFiles): PatternCollection
     {
+        foreach ($contextFiles as $contextFile) {
+            Assert::endsWith($contextFile->getFilename(), '.php');
+        }
+
         $patterns = [];
 
         $classMethodContextDefinitions = $this->resolvePatternsFromFiles($contextFiles);

@@ -7,6 +7,7 @@ namespace Rector\Behastan;
 use Nette\Utils\Strings;
 use RuntimeException;
 use Symfony\Component\Finder\SplFileInfo;
+use Webmozart\Assert\Assert;
 
 /**
  * @see \Rector\Behastan\Tests\UsedInstructionResolver\UsedInstructionResolverTest
@@ -19,6 +20,10 @@ final class UsedInstructionResolver
      */
     public function resolveInstructionsFromFeatureFiles(array $featureFileInfos): array
     {
+        foreach ($featureFileInfos as $featureFileInfo) {
+            Assert::endsWith($featureFileInfo->getFilename(), '.feature');
+        }
+
         $instructions = [];
 
         foreach ($featureFileInfos as $featureFileInfo) {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Rector\Behastan\Analyzer;
 
 use Nette\Utils\Strings;
-use Rector\Behastan\DefinitionPatternsExtractor;
 use Rector\Behastan\UsedInstructionResolver;
 use Rector\Behastan\ValueObject\Pattern\AbstractPattern;
 use Rector\Behastan\ValueObject\Pattern\ExactPattern;
@@ -25,7 +24,6 @@ final readonly class UnusedDefinitionsAnalyzer
 
     public function __construct(
         private UsedInstructionResolver $usedInstructionResolver,
-        private DefinitionPatternsExtractor $definitionPatternsExtractor,
     ) {
     }
 
@@ -37,17 +35,9 @@ final readonly class UnusedDefinitionsAnalyzer
      */
     public function analyse(array $contextFiles, array $featureFiles, PatternCollection $patternCollection): array
     {
-        Assert::allIsInstanceOf($contextFiles, SplFileInfo::class);
-        foreach ($contextFiles as $contextFile) {
-            Assert::endsWith($contextFile->getFilename(), '.php');
-        }
-
-        Assert::allIsInstanceOf($featureFiles, SplFileInfo::class);
         foreach ($featureFiles as $featureFile) {
             Assert::endsWith($featureFile->getFilename(), '.feature');
         }
-
-        $patternCollection = $this->definitionPatternsExtractor->extract($contextFiles);
 
         $featureInstructions = $this->usedInstructionResolver->resolveInstructionsFromFeatureFiles($featureFiles);
 
