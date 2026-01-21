@@ -36,9 +36,8 @@ final readonly class DuplicatedScenarioNamesRule implements RuleInterface
         foreach ($scenarioNamesToFiles as $scenarioName => $files) {
             // it can be used multiple times in single file
             $uniqueFiles = array_unique($files);
-            $uniqueCount = count($uniqueFiles);
 
-            $errorMessage = sprintf('Scenario name "%s" is duplicated %d-times', $scenarioName, $uniqueCount);
+            $errorMessage = sprintf('Scenario name "%s" is duplicated %d-times', $scenarioName, count($files));
 
             $ruleErrors[] = new RuleError($errorMessage, $uniqueFiles, $this->getIdentifier());
         }
