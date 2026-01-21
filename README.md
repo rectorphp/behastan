@@ -108,6 +108,24 @@ This rule spots definitions that are no longer needed, so you can  remove them.
 
 <br>
 
+### 4. Find duplicate scenario names (`duplicate-scenario-names`)
+
+In Behat, each scenario should have a unique name to ensure clarity and avoid confusion during test execution and later debugging. This rule identifies scenarios that share the same name within your feature files:
+
+```yaml
+Feature: User Authentication
+
+    Scenario: User logs in successfully
+        When the user enters valid credentials
+        Then login should be successful
+
+    Scenario: User logs in successfully
+        When the user enters invalid credentials
+        Then an error message should be displayed
+```
+
+<br>
+
 *Protip*: Add this command to your CI, to get instant feedback of any changes in every pull-request.
 
 That's it!
