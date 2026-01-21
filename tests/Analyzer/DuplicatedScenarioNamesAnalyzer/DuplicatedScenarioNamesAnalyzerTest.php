@@ -19,9 +19,9 @@ final class DuplicatedScenarioNamesAnalyzerTest extends AbstractTestCase
         $this->duplicatedScenarioNamesAnalyzer = $this->make(DuplicatedScenarioNamesAnalyzer::class);
     }
 
-    public function test(): void
+    public function testSpot(): void
     {
-        $featureFiles = BehatMetafilesFinder::findFeatureFiles([__DIR__ . '/Fixture']);
+        $featureFiles = BehatMetafilesFinder::findFeatureFiles([__DIR__ . '/Fixture/simple']);
         $this->assertCount(2, $featureFiles);
 
         $duplicatedScenarioNamesToFiles = $this->duplicatedScenarioNamesAnalyzer->analyze($featureFiles);
@@ -31,6 +31,16 @@ final class DuplicatedScenarioNamesAnalyzerTest extends AbstractTestCase
 
         $givenFiles = $duplicatedScenarioNamesToFiles['Same scenario name'];
 
-        $this->assertSame([__DIR__ . '/Fixture/some.feature', __DIR__ . '/Fixture/another.feature'], $givenFiles);
+        $this->assertSame([__DIR__ . '/Fixture/simple/some.feature', __DIR__ . '/Fixture/simple/another.feature'], $givenFiles);
+    }
+
+    public function testSkipSecondLineDifferent(): void
+    {
+        $featureFiles = BehatMetafilesFinder::findFeatureFiles([__DIR__ . '/Fixture/no-multi-line']);
+        $this->assertCount(2, $featureFiles);
+
+        $duplicatedScenarioNamesToFiles = $this->duplicatedScenarioNamesAnalyzer->analyze($featureFiles);
+
+        $this->assertCount(0, $duplicatedScenarioNamesToFiles);
     }
 }
