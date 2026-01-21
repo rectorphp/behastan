@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Rector\Behastan\Rule;
 
-use Entropy\Utils\Regex;
+use Rector\Behastan\Analyzer\DuplicatedScenarioNamesAnalyzer;
 use Rector\Behastan\Contract\RuleInterface;
 use Rector\Behastan\Enum\RuleIdentifier;
 use Rector\Behastan\ValueObject\PatternCollection;
@@ -13,6 +13,11 @@ use Symfony\Component\Finder\SplFileInfo;
 
 final readonly class DuplicatedScenarioNamesRule implements RuleInterface
 {
+    public function __construct(
+        private DuplicatedScenarioNamesAnalyzer $duplicatedScenarioNamesAnalyzer
+    ) {
+    }
+
     /**
      * @param SplFileInfo[] $contextFiles
      * @param SplFileInfo[] $featureFiles
@@ -25,26 +30,18 @@ final readonly class DuplicatedScenarioNamesRule implements RuleInterface
         PatternCollection $patternCollection,
         string $projectDirectory
     ): array {
-        $scenarioNamesToFiles = [];
-        foreach ($featureFiles as $featureFile) {
-            // match Scenario: "<name>"
-            $matches = Regex::match($featureFile->getContents(), '#^\s*Scenario:\s*(["\'])(?P<name>.+?)\1#mi');
-            foreach ($matches as $match) {
-                $scenarioNamesToFiles[$match['name']][] = $featureFile->getRealPath();
-            }
+        $scenarioNamesToFiles = $this->duplicatedScenarioNamesAnalyzer->analyze($featureFiles);
+
+        $ruleErrors = [];
+        foreach ($scenarioNamesToFiles as $scenarioName => $files) {
+            // it can be used multiple times in single file
+            $uniqueFiles = array_unique($files);
+            $uniqueCount = count($uniqueFiles);
+
+            $errorMessage = sprintf('Scenario name "%s" is duplicated %d-times', $scenarioName, $uniqueCount);
+
+            $ruleErrors[] = new RuleError($errorMessage, $uniqueFiles, $this->getIdentifier());
         }
-
-        dump($scenarioNamesToFiles);
-        die;
-
-        //        $errorMessage = sprintf(
-        //            'These %d definitions have different patterns, but same method body: %s%s',
-        //            count($duplicatedContextDefinition),
-        //            PHP_EOL,
-        //            $patternStrings
-        //        );
-        //
-        //        $ruleErrors[] = new RuleError($errorMessage, $lineFilePaths, $this->getIdentifier());
 
         return $ruleErrors;
     }

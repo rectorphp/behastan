@@ -28,12 +28,11 @@ final readonly class UnusedDefinitionsAnalyzer
     }
 
     /**
-     * @param SplFileInfo[] $contextFiles
      * @param SplFileInfo[] $featureFiles
      *
      * @return AbstractPattern[]
      */
-    public function analyse(array $contextFiles, array $featureFiles, PatternCollection $patternCollection): array
+    public function analyse(array $featureFiles, PatternCollection $patternCollection): array
     {
         foreach ($featureFiles as $featureFile) {
             Assert::endsWith($featureFile->getFilename(), '.feature');
