@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Rector\Behastan\Rule;
 
 use Rector\Behastan\Analyzer\ContextDefinitionsAnalyzer;
@@ -9,36 +8,30 @@ use Rector\Behastan\Contract\RuleInterface;
 use Rector\Behastan\Enum\RuleIdentifier;
 use Rector\Behastan\ValueObject\PatternCollection;
 use Rector\Behastan\ValueObject\RuleError;
-use Symfony\Component\Finder\SplFileInfo;
-
-final readonly class DuplicatedContextDefinitionContentsRule implements RuleInterface
+use Behastan202601\Symfony\Component\Finder\SplFileInfo;
+final class DuplicatedContextDefinitionContentsRule implements RuleInterface
 {
-    public function __construct(
-        private ContextDefinitionsAnalyzer $contextDefinitionsAnalyzer
-    ) {
+    /**
+     * @readonly
+     * @var \Rector\Behastan\Analyzer\ContextDefinitionsAnalyzer
+     */
+    private $contextDefinitionsAnalyzer;
+    public function __construct(ContextDefinitionsAnalyzer $contextDefinitionsAnalyzer)
+    {
+        $this->contextDefinitionsAnalyzer = $contextDefinitionsAnalyzer;
     }
-
     /**
      * @param SplFileInfo[] $contextFiles
      * @param SplFileInfo[] $featureFiles
      *
      * @return RuleError[]
      */
-    public function process(
-        array $contextFiles,
-        array $featureFiles,
-        PatternCollection $patternCollection,
-        string $projectDirectory
-    ): array {
-        $contextDefinitionByContentHash = $this->contextDefinitionsAnalyzer->resolveAndGroupByContentHash(
-            $contextFiles
-        );
-
+    public function process(array $contextFiles, array $featureFiles, PatternCollection $patternCollection, string $projectDirectory): array
+    {
+        $contextDefinitionByContentHash = $this->contextDefinitionsAnalyzer->resolveAndGroupByContentHash($contextFiles);
         $ruleErrors = [];
-
         // keep only duplicated
         $duplicatedContextDefinitionByContentsHash = $this->filterOutNotDuplicated($contextDefinitionByContentHash);
-
         foreach ($duplicatedContextDefinitionByContentsHash as $duplicatedContextDefinition) {
             $patternStrings = '';
             $lineFilePaths = [];
@@ -46,28 +39,17 @@ final readonly class DuplicatedContextDefinitionContentsRule implements RuleInte
                 $patternStrings .= ' * ' . $contextDefinition->getPattern() . "\n";
                 $lineFilePaths[] = $contextDefinition->getFilePath() . ':' . $contextDefinition->getMethodLine();
             }
-
             // standardize order
             sort($lineFilePaths);
-
-            $errorMessage = sprintf(
-                'These %d definitions have different patterns, but same method body: %s%s',
-                count($duplicatedContextDefinition),
-                PHP_EOL,
-                $patternStrings
-            );
-
+            $errorMessage = sprintf('These %d definitions have different patterns, but same method body: %s%s', count($duplicatedContextDefinition), \PHP_EOL, $patternStrings);
             $ruleErrors[] = new RuleError($errorMessage, $lineFilePaths, $this->getIdentifier());
         }
-
         return $ruleErrors;
     }
-
     public function getIdentifier(): string
     {
         return RuleIdentifier::DUPLICATED_CONTENTS;
     }
-
     /**
      * @template TItem as object
      *
@@ -81,7 +63,6 @@ final readonly class DuplicatedContextDefinitionContentsRule implements RuleInte
                 unset($items[$hash]);
             }
         }
-
         return $items;
     }
 }
