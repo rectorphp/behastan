@@ -7,8 +7,9 @@
     ],
     "require": {
         "php": "^8.3",
-        "nette/utils": "^4.0",
+        "behat/gherkin": "^4.16",
         "entropy/entropy": "dev-main",
+        "nette/utils": "^4.0",
         "nikic/php-parser": "^5.6",
         "symfony/finder": "^7.0",
         "webmozart/assert": "^1.12"
@@ -19,6 +20,7 @@
         "phpunit/phpunit": "^12.5",
         "rector/jack": "^0.5.1",
         "rector/rector": "^2.3.2",
+        "shipmonk/composer-dependency-analyser": "^1.8",
         "symplify/easy-coding-standard": "^13.0",
         "tomasvotruba/class-leak": "^2.1",
         "tracy/tracy": "^2.10"

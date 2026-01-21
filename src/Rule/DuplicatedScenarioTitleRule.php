@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Rector\Behastan\Rule;
 
-use Rector\Behastan\Analyzer\DuplicatedScenarioNamesAnalyzer;
+use Rector\Behastan\Analyzer\DuplicatedScenarioTitlesAnalyzer;
 use Rector\Behastan\Contract\RuleInterface;
 use Rector\Behastan\Enum\RuleIdentifier;
 use Rector\Behastan\ValueObject\PatternCollection;
 use Rector\Behastan\ValueObject\RuleError;
 use Symfony\Component\Finder\SplFileInfo;
 
-final readonly class DuplicatedScenarioNamesRule implements RuleInterface
+final readonly class DuplicatedScenarioTitleRule implements RuleInterface
 {
     public function __construct(
-        private DuplicatedScenarioNamesAnalyzer $duplicatedScenarioNamesAnalyzer
+        private DuplicatedScenarioTitlesAnalyzer $duplicatedScenarioNamesAnalyzer
     ) {
     }
 
@@ -47,6 +47,6 @@ final readonly class DuplicatedScenarioNamesRule implements RuleInterface
 
     public function getIdentifier(): string
     {
-        return RuleIdentifier::DUPLICATED_SCENARIO_NAMES;
+        return RuleIdentifier::DUPLICATED_SCENARIO_TITLES;
     }
 }

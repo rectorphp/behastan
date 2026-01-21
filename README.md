@@ -108,7 +108,7 @@ This rule spots definitions that are no longer needed, so you can  remove them.
 
 <br>
 
-### 4. Find duplicate scenario names (`duplicate-scenario-names`)
+### 4. Find duplicate scenario titles (`duplicate-scenario-titles`)
 
 In Behat, each scenario should have a unique name to ensure clarity and avoid confusion during test execution and later debugging. This rule identifies scenarios that share the same name within your feature files:
 
