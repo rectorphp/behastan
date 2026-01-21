@@ -29,7 +29,7 @@ final readonly class UnusedContextDefinitionsRule implements RuleInterface
         PatternCollection $patternCollection,
         string $projectDirectory
     ): array {
-        $unusedPatterns = $this->unusedDefinitionsAnalyzer->analyse($contextFiles, $featureFiles, $patternCollection);
+        $unusedPatterns = $this->unusedDefinitionsAnalyzer->analyse($featureFiles, $patternCollection);
 
         $ruleErrors = [];
 

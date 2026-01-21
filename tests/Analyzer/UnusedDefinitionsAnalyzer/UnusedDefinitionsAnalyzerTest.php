@@ -34,11 +34,7 @@ final class UnusedDefinitionsAnalyzerTest extends AbstractTestCase
 
         $patternCollection = $this->definitionPatternsExtractor->extract($contextFiles);
 
-        $unusedDefinitions = $this->unusedDefinitionsAnalyzer->analyse(
-            $contextFiles,
-            $featureFiles,
-            $patternCollection
-        );
+        $unusedDefinitions = $this->unusedDefinitionsAnalyzer->analyse($featureFiles, $patternCollection);
 
         $this->assertCount(0, $unusedDefinitions);
     }
@@ -53,7 +49,7 @@ final class UnusedDefinitionsAnalyzerTest extends AbstractTestCase
 
         $patternCollection = $this->definitionPatternsExtractor->extract($contextFiles);
 
-        $unusedPatterns = $this->unusedDefinitionsAnalyzer->analyse($contextFiles, $featureFiles, $patternCollection);
+        $unusedPatterns = $this->unusedDefinitionsAnalyzer->analyse($featureFiles, $patternCollection);
 
         $this->assertCount(1, $unusedPatterns);
         $this->assertContainsOnlyInstancesOf(AbstractPattern::class, $unusedPatterns);
