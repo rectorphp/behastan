@@ -43,8 +43,9 @@ final readonly class AnalyzeCommand implements CommandInterface
         $contextFileInfos = BehatMetafilesFinder::findContextFiles([$projectDirectory]);
         if ($contextFileInfos === []) {
             $this->outputPrinter->redBackground(sprintf(
-                'No *.Context files found in "%s". Please provide correct directory',
-                $projectDirectory
+                'No *.Context files found in "%s".%sPlease provide correct directory',
+                $projectDirectory,
+                PHP_EOL
             ));
 
             return ExitCode::ERROR;
@@ -53,8 +54,9 @@ final readonly class AnalyzeCommand implements CommandInterface
         $featureFileInfos = BehatMetafilesFinder::findFeatureFiles([$projectDirectory]);
         if ($featureFileInfos === []) {
             $this->outputPrinter->redBackground(sprintf(
-                'No *.feature files found in "%s". Please provide correct directory',
-                $projectDirectory
+                'No *.feature files found in "%s".%sPlease provide correct directory',
+                $projectDirectory,
+                PHP_EOL
             ));
 
             return ExitCode::ERROR;
@@ -79,7 +81,7 @@ final readonly class AnalyzeCommand implements CommandInterface
         /** @var RuleError[] $allRuleErrors */
         $allRuleErrors = [];
         foreach ($this->rulesRegistry->all() as $rule) {
-            if ($skip !== [] && in_array($rule->getIdentifier(), $skip, true)) {
+            if (in_array($rule->getIdentifier(), $skip, true)) {
                 $this->outputPrinter->writeln(sprintf('<fg=cyan>Skipping "%s" rule</>', $rule->getIdentifier()));
                 $this->outputPrinter->newLine();
                 continue;

@@ -17,7 +17,7 @@ final readonly class RulesRegistry
     ) {
         Assert::allObject($rules);
         Assert::allIsInstanceOf($rules, RuleInterface::class);
-        Assert::greaterThan(count($rules), 2);
+        Assert::greaterThan(count($rules), 3);
     }
 
     /**
