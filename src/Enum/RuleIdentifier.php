@@ -8,7 +8,7 @@ final class RuleIdentifier
 {
     public const string DUPLICATED_CONTENTS = 'duplicated-contents';
 
-    public const string DUPLICATED_SCENARIO_NAMES = 'duplicated-scenario-names';
+    public const string DUPLICATED_SCENARIO_TITLES = 'duplicated-scenario-titles';
 
     public const string DUPLICATED_PATTERNS = 'duplicated-patterns';
 

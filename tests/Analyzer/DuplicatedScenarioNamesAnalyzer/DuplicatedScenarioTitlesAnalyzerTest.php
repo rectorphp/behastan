@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Rector\Behastan\Tests\Analyzer\DuplicatedScenarioNamesAnalyzer;
 
-use Rector\Behastan\Analyzer\DuplicatedScenarioNamesAnalyzer;
+use Rector\Behastan\Analyzer\DuplicatedScenarioTitlesAnalyzer;
 use Rector\Behastan\Finder\BehatMetafilesFinder;
 use Rector\Behastan\Tests\AbstractTestCase;
 
-final class DuplicatedScenarioNamesAnalyzerTest extends AbstractTestCase
+final class DuplicatedScenarioTitlesAnalyzerTest extends AbstractTestCase
 {
-    private DuplicatedScenarioNamesAnalyzer $duplicatedScenarioNamesAnalyzer;
+    private DuplicatedScenarioTitlesAnalyzer $duplicatedScenarioNamesAnalyzer;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->duplicatedScenarioNamesAnalyzer = $this->make(DuplicatedScenarioNamesAnalyzer::class);
+        $this->duplicatedScenarioNamesAnalyzer = $this->make(DuplicatedScenarioTitlesAnalyzer::class);
     }
 
     public function testSpot(): void
@@ -31,7 +31,10 @@ final class DuplicatedScenarioNamesAnalyzerTest extends AbstractTestCase
 
         $givenFiles = $duplicatedScenarioNamesToFiles['Same scenario name'];
 
-        $this->assertSame([__DIR__ . '/Fixture/simple/some.feature', __DIR__ . '/Fixture/simple/another.feature'], $givenFiles);
+        $this->assertSame(
+            [__DIR__ . '/Fixture/simple/some.feature', __DIR__ . '/Fixture/simple/another.feature'],
+            $givenFiles
+        );
     }
 
     public function testSkipSecondLineDifferent(): void
