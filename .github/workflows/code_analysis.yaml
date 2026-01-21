@@ -32,6 +32,10 @@ jobs:
                         run: php bin/behastan
 
                     -
+                        name: Composer dependencies
+                        run: vendor/bin/composer-dependency-analyser
+
+                    -
                         name: 'Check Active Classes'
                         run: vendor/bin/class-leak check bin src --skip-type="Entropy\Console\Contract\CommandInterface" --skip-type="Rector\Behastan\Contract\RuleInterface"
 
