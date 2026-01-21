@@ -10,13 +10,13 @@ use Rector\Behastan\Tests\AbstractTestCase;
 
 final class DuplicatedScenarioTitlesAnalyzerTest extends AbstractTestCase
 {
-    private DuplicatedScenarioTitlesAnalyzer $duplicatedScenarioNamesAnalyzer;
+    private DuplicatedScenarioTitlesAnalyzer $duplicatedScenarioTitlesAnalyzer;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->duplicatedScenarioNamesAnalyzer = $this->make(DuplicatedScenarioTitlesAnalyzer::class);
+        $this->duplicatedScenarioTitlesAnalyzer = $this->make(DuplicatedScenarioTitlesAnalyzer::class);
     }
 
     public function testSpot(): void
@@ -24,7 +24,7 @@ final class DuplicatedScenarioTitlesAnalyzerTest extends AbstractTestCase
         $featureFiles = BehatMetafilesFinder::findFeatureFiles([__DIR__ . '/Fixture/simple']);
         $this->assertCount(2, $featureFiles);
 
-        $duplicatedScenarioNamesToFiles = $this->duplicatedScenarioNamesAnalyzer->analyze($featureFiles);
+        $duplicatedScenarioNamesToFiles = $this->duplicatedScenarioTitlesAnalyzer->analyze($featureFiles);
 
         $this->assertCount(1, $duplicatedScenarioNamesToFiles);
         $this->assertArrayHasKey('Same scenario name', $duplicatedScenarioNamesToFiles);
@@ -42,7 +42,7 @@ final class DuplicatedScenarioTitlesAnalyzerTest extends AbstractTestCase
         $featureFiles = BehatMetafilesFinder::findFeatureFiles([__DIR__ . '/Fixture/no-multi-line']);
         $this->assertCount(2, $featureFiles);
 
-        $duplicatedScenarioNamesToFiles = $this->duplicatedScenarioNamesAnalyzer->analyze($featureFiles);
+        $duplicatedScenarioNamesToFiles = $this->duplicatedScenarioTitlesAnalyzer->analyze($featureFiles);
 
         $this->assertCount(0, $duplicatedScenarioNamesToFiles);
     }

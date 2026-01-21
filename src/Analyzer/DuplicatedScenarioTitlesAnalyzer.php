@@ -33,8 +33,6 @@ final readonly class DuplicatedScenarioTitlesAnalyzer
             }
         }
 
-        return array_filter($scenarioNamesToFiles, function (array $files): bool {
-            return count($files) > 1;
-        });
+        return array_filter($scenarioNamesToFiles, fn(array $files): bool => count($files) > 1);
     }
 }

@@ -10,7 +10,7 @@ use Behat\Gherkin\Node\FeatureNode;
 use Behat\Gherkin\Parser;
 use Webmozart\Assert\Assert;
 
-final class GherkinParser
+final readonly class GherkinParser
 {
     private Parser $parser;
 

@@ -14,7 +14,7 @@ use Symfony\Component\Finder\SplFileInfo;
 final readonly class DuplicatedScenarioTitleRule implements RuleInterface
 {
     public function __construct(
-        private DuplicatedScenarioTitlesAnalyzer $duplicatedScenarioNamesAnalyzer
+        private DuplicatedScenarioTitlesAnalyzer $duplicatedScenarioTitlesAnalyzer
     ) {
     }
 
@@ -30,7 +30,7 @@ final readonly class DuplicatedScenarioTitleRule implements RuleInterface
         PatternCollection $patternCollection,
         string $projectDirectory
     ): array {
-        $scenarioNamesToFiles = $this->duplicatedScenarioNamesAnalyzer->analyze($featureFiles);
+        $scenarioNamesToFiles = $this->duplicatedScenarioTitlesAnalyzer->analyze($featureFiles);
 
         $ruleErrors = [];
         foreach ($scenarioNamesToFiles as $scenarioName => $files) {
