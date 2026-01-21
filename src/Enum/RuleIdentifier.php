@@ -1,16 +1,24 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Rector\Behastan\Enum;
 
 final class RuleIdentifier
 {
-    public const string DUPLICATED_CONTENTS = 'duplicated-contents';
-
-    public const string DUPLICATED_SCENARIO_NAMES = 'duplicated-scenario-names';
-
-    public const string DUPLICATED_PATTERNS = 'duplicated-patterns';
-
-    public const string UNUSED_DEFINITIONS = 'unused-definitions';
+    /**
+     * @var string
+     */
+    public const DUPLICATED_CONTENTS = 'duplicated-contents';
+    /**
+     * @var string
+     */
+    public const DUPLICATED_SCENARIO_NAMES = 'duplicated-scenario-names';
+    /**
+     * @var string
+     */
+    public const DUPLICATED_PATTERNS = 'duplicated-patterns';
+    /**
+     * @var string
+     */
+    public const UNUSED_DEFINITIONS = 'unused-definitions';
 }
