@@ -31,7 +31,13 @@ final class PatternCollectionTest extends TestCase
             new RegexPattern('#here is more#', 'file1.php', 10, 'SomeClass', 'someMethod'),
         ]);
 
-        $this->assertSame('#(?:(?:this is it)|(?:here is more))#', $patternCollection->regexPatternString());
+        $this->assertSame(['#this is it#', '#here is more#'], $patternCollection->regexPatternsStrings());
+    }
 
+    public function testNamedPatterns(): void
+    {
+        $namedPattern = new NamedPattern('this is :me', 'file1.php', 10, 'SomeClass', 'someMethod');
+
+        $this->assertSame('#this is (.*?)#', $namedPattern->getRegexPattern());
     }
 }
