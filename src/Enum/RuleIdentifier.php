@@ -13,4 +13,6 @@ final class RuleIdentifier
     public const string DUPLICATED_PATTERNS = 'duplicated-patterns';
 
     public const string UNUSED_DEFINITIONS = 'unused-definitions';
+
+    public const string MISSING_CONTEXT_DEFINITIONS = 'missing-context-definitions';
 }
