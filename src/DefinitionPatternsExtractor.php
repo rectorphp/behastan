@@ -36,6 +36,8 @@ final readonly class DefinitionPatternsExtractor
      */
     public function extract(array $contextFiles): PatternCollection
     {
+        Assert::allIsInstanceOf($contextFiles, SplFileInfo::class);
+
         foreach ($contextFiles as $contextFile) {
             Assert::endsWith($contextFile->getFilename(), '.php');
         }
