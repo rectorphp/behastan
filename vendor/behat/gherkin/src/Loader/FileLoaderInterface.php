@@ -1,0 +1,29 @@
+<?php
+
+/*
+ * This file is part of the Behat Gherkin Parser.
+ * (c) Konstantin Kudryashov <ever.zet@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Behastan202601\Behat\Gherkin\Loader;
+
+/**
+ * File Loader interface.
+ *
+ * @author Konstantin Kudryashov <ever.zet@gmail.com>
+ *
+ * @template TResourceType
+ *
+ * @extends LoaderInterface<TResourceType>
+ */
+interface FileLoaderInterface extends LoaderInterface
+{
+    /**
+     * Sets base features path.
+     *
+     * @return void
+     */
+    public function setBasePath(string $path);
+}
