@@ -8,6 +8,7 @@ use Behat\Gherkin\Keywords\ArrayKeywords;
 use Behat\Gherkin\Lexer;
 use Behat\Gherkin\Node\FeatureNode;
 use Behat\Gherkin\Parser;
+use Entropy\Utils\FileSystem;
 use Webmozart\Assert\Assert;
 
 final readonly class GherkinParser
@@ -36,7 +37,9 @@ final readonly class GherkinParser
 
     public function parseFile(string $filePath): FeatureNode
     {
-        $featureNode = $this->parser->parseFile($filePath);
+        $fileContents = FileSystem::read($filePath);
+
+        $featureNode = $this->parser->parse($fileContents);
         Assert::isInstanceOf($featureNode, FeatureNode::class);
 
         return $featureNode;
