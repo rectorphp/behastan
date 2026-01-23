@@ -7,7 +7,7 @@
     ],
     "require": {
         "php": "^8.3",
-        "behat/gherkin": "^4.16",
+        "behat/gherkin": "4.10.*",
         "entropy/entropy": "dev-main",
         "nette/utils": "^4.0",
         "nikic/php-parser": "^5.6",
