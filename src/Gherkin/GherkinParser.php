@@ -9,7 +9,6 @@ use Behat\Gherkin\Lexer;
 use Behat\Gherkin\Node\FeatureNode;
 use Behat\Gherkin\Parser;
 use Entropy\Utils\FileSystem;
-use Webmozart\Assert\Assert;
 
 final readonly class GherkinParser
 {
