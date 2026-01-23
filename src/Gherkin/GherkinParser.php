@@ -35,13 +35,10 @@ final readonly class GherkinParser
         $this->parser = new Parser(new Lexer($arrayKeywords));
     }
 
-    public function parseFile(string $filePath): FeatureNode
+    public function parseFile(string $filePath): ?FeatureNode
     {
         $fileContents = FileSystem::read($filePath);
 
-        $featureNode = $this->parser->parse($fileContents);
-        Assert::isInstanceOf($featureNode, FeatureNode::class);
-
-        return $featureNode;
+        return $this->parser->parse($fileContents);
     }
 }

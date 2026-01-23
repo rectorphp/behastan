@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rector\Behastan\Analyzer;
 
+use Behat\Gherkin\Node\FeatureNode;
 use Entropy\Attributes\RelatedTest;
 use Rector\Behastan\Gherkin\GherkinParser;
 use Rector\Behastan\Tests\Analyzer\DuplicatedScenarioNamesAnalyzer\DuplicatedScenarioTitlesAnalyzerTest;
@@ -27,6 +28,11 @@ final readonly class DuplicatedScenarioTitlesAnalyzer
 
         foreach ($featureFiles as $featureFile) {
             $featureGherkin = $this->gherkinParser->parseFile($featureFile->getRealPath());
+
+            // @todo test and improve here
+            if (! $featureGherkin instanceof FeatureNode) {
+                continue;
+            }
 
             foreach ($featureGherkin->getScenarios() as $scenario) {
                 $scenarioNamesToFiles[$scenario->getTitle()][] = $featureFile->getRealPath();
