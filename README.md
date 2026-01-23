@@ -126,6 +126,21 @@ Feature: User Authentication
 
 <br>
 
+### 5. Rerport redundant regex definitions (`redundant-regex-definitions`)
+
+When defining step definitions in Behat, it's common to use regular expressions to match patterns. However, sometimes these regex patterns can be overly complex or redundant, making them harder to read and maintain. This rule identifies such redundant regex definitions:
+
+```diff
+-#[When('#I have apples#')]
++#[When('I have apples')]
+ public function iHaveApples()
+ {
+     // ...
+ }
+```
+
+<br>
+
 *Protip*: Add this command to your CI, to get instant feedback of any changes in every pull-request.
 
 That's it!

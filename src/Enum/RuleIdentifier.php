@@ -13,4 +13,6 @@ final class RuleIdentifier
     public const string DUPLICATED_PATTERNS = 'duplicated-patterns';
 
     public const string UNUSED_DEFINITIONS = 'unused-definitions';
+
+    public const string REDUNDANT_REGEX_DEFINITION = 'redundant-regex-definition';
 }
