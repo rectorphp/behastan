@@ -20,6 +20,7 @@ final class RegexPattern extends AbstractPattern
         $body = $matches['body'];
 
         // ignore ^ at start and $ at end
+
         /** @var string $body */
         $body = preg_replace('~^\^~', '', $body);
 
