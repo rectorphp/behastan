@@ -26,11 +26,11 @@ final readonly class AnalyzeCommand implements CommandInterface
 
     /**
      * @param string $projectDirectory Project directory (we find *.Context.php definition files and *.feature script files there)
-     * @param string[] $skip Skip a rule by identifier
+     * @param string[] $skips Skip a rule by identifier
      *
      * @return ExitCode::*
      */
-    public function run(?string $projectDirectory = null, array $skip = []): int
+    public function run(?string $projectDirectory = null, array $skips = []): int
     {
         // fallback to current directory
         if ($projectDirectory === null) {
@@ -81,7 +81,7 @@ final readonly class AnalyzeCommand implements CommandInterface
         /** @var RuleError[] $allRuleErrors */
         $allRuleErrors = [];
         foreach ($this->rulesRegistry->all() as $rule) {
-            if (in_array($rule->getIdentifier(), $skip, true)) {
+            if (in_array($rule->getIdentifier(), $skips, true)) {
                 $this->outputPrinter->writeln(sprintf('<fg=cyan>Skipping "%s" rule</>', $rule->getIdentifier()));
                 $this->outputPrinter->newLine();
                 continue;

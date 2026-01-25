@@ -9,21 +9,21 @@
         "php": "^8.3",
         "behat/gherkin": "4.10.*",
         "entropy/entropy": "dev-main",
-        "nette/utils": "^4.0",
-        "nikic/php-parser": "^5.6",
-        "symfony/finder": "^7.0",
-        "webmozart/assert": "^1.12"
+        "nette/utils": "^4.1",
+        "nikic/php-parser": "^5.7",
+        "symfony/finder": "^7.4",
+        "webmozart/assert": "^2.1"
     },
     "require-dev": {
         "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan": "^2.1.34",
+        "phpstan/phpstan": "^2.1.37",
         "phpunit/phpunit": "^12.5",
         "rector/jack": "^0.5.1",
-        "rector/rector": "^2.3.2",
+        "rector/rector": "^2.3.4",
         "shipmonk/composer-dependency-analyser": "^1.8",
         "symplify/easy-coding-standard": "^13.0",
         "tomasvotruba/class-leak": "^2.1",
-        "tracy/tracy": "^2.10"
+        "tracy/tracy": "^2.11"
     },
     "autoload": {
         "psr-4": {
