@@ -16,5 +16,8 @@ final class RegexPatternTest extends TestCase
 
         $regexPattern = new RegexPattern('/foo (.*) and that/', 'someFilePath', 123, 'SomeClass', 'someMethod');
         $this->assertTrue($regexPattern->isRegexPatternNeccessary());
+
+        $regexPattern = new RegexPattern('/^I do this and that$/', 'someFilePath', 123, 'SomeClass', 'someMethod');
+        $this->assertFalse($regexPattern->isRegexPatternNeccessary());
     }
 }

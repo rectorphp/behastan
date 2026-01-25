@@ -10,12 +10,18 @@ final class RegexPattern extends AbstractPattern
 {
     public function isRegexPatternNeccessary(): bool
     {
-        // simple exact match regexes are redundant
-        if (Regex::match($this->pattern, '/^\/[^\^\$\.\*\+\?\|\(\)\[\]\{\}\\\]+\/$/')) {
-            return false;
+        $matches = Regex::match($this->pattern, '~^/(?<body>(?:\\\\/|[^/])*)/$~');
+        if ($matches === []) {
+            return true;
         }
 
-        return true;
+        $body = $matches['body'];
 
+        // ignore ^ at start and $ at end
+        $body = preg_replace('~^\^~', '', $body);
+        $body = preg_replace('~(?<!\\\\)\$$~', '', $body);
+
+        // any unescaped regex meta char => needs regex
+        return (bool) preg_match('~(?<!\\\\)[.*+?()\\[\\]{}|\\\\]~', $body);
     }
 }
