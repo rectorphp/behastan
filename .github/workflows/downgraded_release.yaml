@@ -69,8 +69,8 @@ jobs:
             -
                 working-directory: remote-repository
                 run: |
-                    git config user.email "action@github.com"
-                    git config user.name "GitHub Action"
+                    git config user.email "tomas.vot@gmail.com"
+                    git config user.name "Tomas Votruba"
 
             # publish to remote repository without tag
             -
