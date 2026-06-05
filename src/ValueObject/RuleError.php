@@ -1,29 +1,40 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Rector\Behastan\ValueObject;
 
 use Rector\Behastan\Enum\RuleIdentifier;
-
-final readonly class RuleError
+final class RuleError
 {
+    /**
+     * @readonly
+     * @var string
+     */
+    private $message;
+    /**
+     * @var string[]
+     * @readonly
+     */
+    private $lineFilePaths;
+    /**
+     * @var RuleIdentifier::*
+     * @readonly
+     */
+    private $identifier;
     /**
      * @param string[] $lineFilePaths
      * @param RuleIdentifier::* $identifier
      */
-    public function __construct(
-        private string $message,
-        private array $lineFilePaths,
-        private string $identifier,
-    ) {
+    public function __construct(string $message, array $lineFilePaths, string $identifier)
+    {
+        $this->message = $message;
+        $this->lineFilePaths = $lineFilePaths;
+        $this->identifier = $identifier;
     }
-
     public function getMessage(): string
     {
         return $this->message;
     }
-
     /**
      * @return string[]
      */
@@ -31,7 +42,6 @@ final readonly class RuleError
     {
         return $this->lineFilePaths;
     }
-
     public function getIdentifier(): string
     {
         return $this->identifier;
