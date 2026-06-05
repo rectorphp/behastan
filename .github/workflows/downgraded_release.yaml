@@ -41,6 +41,9 @@ jobs:
             # prefix and scope
             -   run: sh prefix-code.sh
 
+            # remove the original .github, to fully override it with the target repository one below
+            -   run: rm -rf .github
+
             # copy PHP 7.4 composer + workflows
             -   run: cp -r build/target-repository/. .
 
