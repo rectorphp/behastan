@@ -48,6 +48,7 @@ final class BehatMetafilesFinder
             ->notPath('node_modules')
             // test data
             ->notPath('Fixture')
+            ->sortByName()
             ->in($directories);
     }
 }

@@ -32,7 +32,7 @@ final class DuplicatedScenarioTitlesAnalyzerTest extends AbstractTestCase
         $givenFiles = $duplicatedScenarioNamesToFiles['Same scenario name'];
 
         $this->assertSame(
-            [__DIR__ . '/Fixture/simple/some.feature', __DIR__ . '/Fixture/simple/another.feature'],
+            [__DIR__ . '/Fixture/simple/another.feature', __DIR__ . '/Fixture/simple/some.feature'],
             $givenFiles
         );
     }
