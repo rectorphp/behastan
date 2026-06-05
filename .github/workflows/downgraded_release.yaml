@@ -60,7 +60,7 @@ jobs:
                     git add --all
                     git commit -m "release PHP 7.2 downgraded"
 
-                    # force push tag, so there is only 1 version
+                    # retag locally, as the tag already exists on the original commit
                     git tag "${GITHUB_REF#refs/tags/}" --force
                     git remote add downgraded-repository "https://${{ secrets.WORKFLOWS_TOKEN }}@github.com/anywherephp/behastan.git"
-                    git push downgraded-repository "${GITHUB_REF#refs/tags/}" --force
+                    git push downgraded-repository "${GITHUB_REF#refs/tags/}"
