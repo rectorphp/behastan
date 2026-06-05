@@ -51,7 +51,7 @@ jobs:
                 run: |
                     git config user.email "action@github.com"
                     git config user.name "GitHub Action"
-            # publish to the same repository with a new tag
+            # publish to the anywherephp/behastan repository with a new tag
             # see https://tomasvotruba.com/blog/how-to-release-php-81-and-72-package-in-the-same-repository/
             -
                 name: "Tag Downgraded Code"
@@ -62,4 +62,5 @@ jobs:
 
                     # force push tag, so there is only 1 version
                     git tag "${GITHUB_REF#refs/tags/}" --force
-                    git push origin "${GITHUB_REF#refs/tags/}" --force
+                    git remote add downgraded-repository "https://${{ secrets.WORKFLOWS_TOKEN }}@github.com/anywherephp/behastan.git"
+                    git push downgraded-repository "${GITHUB_REF#refs/tags/}" --force
