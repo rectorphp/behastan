@@ -1,10 +1,8 @@
 name: Downgraded Release
 
 on:
+    # trigger on any push, both branches and tags
     push:
-        tags:
-            # see https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-including-and-excluding-branches
-            - '*'
 
 jobs:
     downgrade_release:
@@ -51,16 +49,26 @@ jobs:
                 run: |
                     git config user.email "action@github.com"
                     git config user.name "GitHub Action"
-            # publish to the anywherephp/behastan repository with a new tag
+            # publish to the anywherephp/behastan repository
             # see https://tomasvotruba.com/blog/how-to-release-php-81-and-72-package-in-the-same-repository/
             -
-                name: "Tag Downgraded Code"
+                name: "Push Downgraded Code"
                 run: |
+                    # create an orphan commit (no parents), so the push does not require
+                    # the original repository history, which the shallow checkout does not have
+                    git checkout --orphan downgraded
+
                     # separate a "git add" to add untracked (new) files too
                     git add --all
                     git commit -m "release PHP 7.2 downgraded"
 
-                    # retag locally, as the tag already exists on the original commit
-                    git tag "${GITHUB_REF#refs/tags/}" --force
                     git remote add downgraded-repository "https://${{ secrets.WORKFLOWS_TOKEN }}@github.com/anywherephp/behastan.git"
-                    git push downgraded-repository "${GITHUB_REF#refs/tags/}"
+
+                    if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+                        # retag locally, as the tag already exists on the original commit
+                        git tag "${GITHUB_REF#refs/tags/}" --force
+                        git push downgraded-repository "${GITHUB_REF#refs/tags/}"
+                    else
+                        # branch push - each run creates a fresh downgrade commit, so the history diverges
+                        git push downgraded-repository HEAD:"${GITHUB_REF#refs/heads/}" --force
+                    fi
