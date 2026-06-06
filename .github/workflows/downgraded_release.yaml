@@ -39,7 +39,7 @@ jobs:
             -   run: rm -rf tests ecs.php phpstan.neon phpunit.xml .gitignore .editorconfig
 
             # prefix and scope
-            -   run: wget https://github.com/humbug/php-scoper/releases/download/0.18.18/php-scoper.phar --no-verbose
+            -   run: wget https://github.com/humbug/php-scoper/releases/download/0.18.19/php-scoper.phar --no-verbose
             -   run: php -d memory_limit=-1 php-scoper.phar add-prefix bin src vendor composer.json --config scoper.php --force --ansi --output-dir scoped-code
             -   run: |
                     rm -r bin src vendor composer.json
