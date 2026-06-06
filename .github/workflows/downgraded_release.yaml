@@ -39,7 +39,13 @@ jobs:
             -   run: rm -rf tests ecs.php phpstan.neon phpunit.xml .gitignore .editorconfig
 
             # prefix and scope
-            -   run: sh prefix-code.sh
+            -   run: wget https://github.com/humbug/php-scoper/releases/download/0.18.18/php-scoper.phar --no-verbose
+            -   run: php -d memory_limit=-1 php-scoper.phar add-prefix bin src vendor composer.json --config scoper.php --force --ansi --output-dir scoped-code
+            -   run: |
+                    rm -r bin src vendor composer.json
+                    mv scoped-code/* .
+            -   run: composer dump-autoload --ansi --classmap-authoritative --no-dev
+            -   run: chmod 777 bin/behastan bin/behastan.php
 
             # remove the original .github, to fully override it with the target repository one below
             -   run: rm -rf .github
@@ -48,7 +54,7 @@ jobs:
             -   run: cp -r build/target-repository/. .
 
             # clear the dev files
-            -   run: rm -rf build prefix-code.sh full-tool-build.sh scoper.php rector.php php-scoper.phar rector-local
+            -   run: rm -rf build scoper.php rector.php php-scoper.phar rector-local
 
             # clone the remote repository, so we can commit on top of its history and push without --force
             # inspired by https://github.com/easy-coding-standard/ecs-src/blob/main/.github/workflows/buid_release.yaml
@@ -69,8 +75,8 @@ jobs:
             -
                 working-directory: remote-repository
                 run: |
-                    git config user.email "tomas.vot@gmail.com"
-                    git config user.name "Tomas Votruba"
+                    git config user.email "tomas@getrector.org"
+                    git config user.name "rector-bot"
 
             # publish to remote repository without tag
             -
